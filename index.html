@@ -81,9 +81,25 @@ main{padding:14px}
 .qa-row textarea{border:1.5px solid var(--border);border-radius:6px;padding:6px;font-size:13px;min-height:36px}
 
 /* Checklist */
-.chk-filtros{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
-.chip-f{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted)}
-.chip-f.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chk-dia-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:9px;-webkit-overflow-scrolling:touch}
+.chk-dia-chip{flex-shrink:0;padding:7px 12px;border-radius:14px;font-size:11.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted);text-align:center;line-height:1.3;cursor:pointer}
+.chk-dia-chip b{display:block;font-size:12.5px}
+.chk-dia-chip span{display:block;font-size:9px;font-weight:600;opacity:.75;margin-top:1px}
+.chk-dia-chip.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chk-dia-summary{background:linear-gradient(135deg,var(--navy),#15304a);color:#fff;border-radius:12px;padding:11px 13px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chk-dia-summary .f{font-weight:800;font-size:13.5px}
+.chk-dia-summary .s{font-size:10px;opacity:.8;margin-top:1px}
+.chk-dia-summary .c{text-align:right;font-size:10px;line-height:1.4;flex-shrink:0}
+.chk-dia-summary .c b{font-size:13px;display:block}
+.chk-grupo-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.chk-grupo-head:first-of-type{margin-top:0}
+.chk-grupo-title{font-size:11.5px;font-weight:800;color:var(--teal2);text-transform:uppercase;letter-spacing:.4px}
+.chk-grupo-zona{font-size:10px;color:#94A3B8;margin-top:1px;font-weight:500}
+.chk-grupo-badges{display:flex;gap:4px;flex-shrink:0}
+.chk-badge-pri{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;background:#F1F5F9;color:#475569;white-space:nowrap}
+.chk-badge-imp{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;background:#DCFCE7;color:#166534;white-space:nowrap}
+.chk-badge-opc{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;background:#FEF3C7;color:#92400E;white-space:nowrap}
+.chk-sup-note{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;border-radius:10px;padding:9px 11px;font-size:11.5px;margin-bottom:10px;line-height:1.5}
 .chk-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px}
 .chk-item.done{opacity:.55}
 .chk-top{display:flex;gap:10px;align-items:flex-start}
@@ -172,12 +188,9 @@ table.cmp .fin-row td{font-weight:700;color:var(--navy)}
 
   <!-- CHECKLIST -->
   <div class="view act" id="v-check">
-    <div class="chk-filtros">
-      <button class="chip-f act" data-f="all" onclick="setChkFase('all',this)">Todas</button>
-      <button class="chip-f" data-f="1" onclick="setChkFase('1',this)">Fase 1</button>
-      <button class="chip-f" data-f="2" onclick="setChkFase('2',this)">Fase 2</button>
-      <label class="chk" style="margin-left:auto"><input type="checkbox" id="chk-solo-pend" onchange="renderChecklist()"> Solo pendientes</label>
-    </div>
+    <div class="chk-dia-chips" id="chk-dia-chips"></div>
+    <div class="chk-dia-summary" id="chk-dia-summary"></div>
+    <label class="chk" style="margin-bottom:8px"><input type="checkbox" id="chk-solo-pend" onchange="renderChecklist()"> Solo pendientes</label>
     <div id="chk-lista"></div>
     <button class="btn btn-sec" style="margin-top:6px" onclick="abrirAddChecklist()">+ Añadir empresa que encontré</button>
   </div>
@@ -390,7 +403,7 @@ table.cmp .fin-row td{font-weight:700;color:var(--navy)}
     <div class="fg"><label>Nombre de la empresa</label><input id="ac-nombre" type="text"/></div>
     <div class="fg"><label>Categoría (texto libre)</label><input id="ac-cat" type="text" placeholder="Ej: Bolsas térmicas"/></div>
     <div class="row2">
-      <div class="fg"><label>Fase</label><select id="ac-fase"><option value="1">Fase 1</option><option value="2">Fase 2</option></select></div>
+      <div class="fg"><label>Día</label><select id="ac-dia"></select></div>
       <div class="fg"><label>Hall / Stand</label><input id="ac-hall" type="text" placeholder="Ej: 12.1 B03"/></div>
     </div>
     <button class="btn btn-prim" onclick="guardarAddChecklist()">Añadir</button>
@@ -444,6 +457,14 @@ async function idbDelete(store,id){
     tx.onerror=()=>rej(tx.error);
   });
 }
+async function idbClear(store){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite').objectStore(store).clear();
+    tx.onsuccess=()=>res(true);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
 async function idbGet(store,id){
   const db=await openDB();
   return new Promise((res,rej)=>{
@@ -467,6 +488,9 @@ const CATEGORIAS = [
      {nombre:'HAERS (哈尔斯 · Zhejiang)',producto:'Termos acero inox 500ml/1L · Sets lonchera 3 compartimentos.',stand:'2.2 D42–53',conf:'proyectado'},
      {nombre:'Supor / SEB Group',producto:'Loncheras apilables 2-3 niveles · Termos mug.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangzhou Imeyon Housewares',producto:'Termos OEM con logo · Bidones 1.5–2L. MOQ ~100.',stand:'No confirmado',conf:'no'},
+     {nombre:'Zhejiang Steel Industry and Trade',producto:'Termos y vacuum flasks, expositor recurrente (Yongkang).',stand:'No confirmado',conf:'no'},
+     {nombre:'Zhejiang Yihai Industry and Trade',producto:'Tumblers inox, botellas deportivas, vacuum flasks (Jinhua).',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangzhou Koodee Metal',producto:'Botellas de agua inox, tumblers, mugs de café.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'movil',emoji:'📱',nombre:'Accesorios para Móvil',fase:1,zona:'Halls 1.1–2.2',pri:true,
    empresas:[
@@ -474,6 +498,7 @@ const CATEGORIAS = [
      {nombre:'HOCO Technology',producto:'Fundas Samsung/iPhone · Cables MFi.',stand:'No confirmado',conf:'no'},
      {nombre:'Ugreen Group',producto:'Hubs USB-C · Adaptadores premium.',stand:'No confirmado',conf:'no'},
      {nombre:'Romoss Technology',producto:'Power banks 10-20k mAh.',stand:'No confirmado',conf:'no'},
+     {nombre:'Shenzhen Qihang Chuangshi Technology',producto:'Cables y cargadores USB, fabricante/exportador directo.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'ventiladores',emoji:'🌀',nombre:'Ventiladores y Cooling',fase:1,zona:'Halls 3.1–4.2',pri:true,
    empresas:[
@@ -498,18 +523,27 @@ const CATEGORIAS = [
      {nombre:'Nuby',producto:'Mordedores silicona · Biberones anticólico. FDA/EN71.',stand:'No confirmado',conf:'no'},
      {nombre:'B-Duck Baby Products',producto:'Bañeras plegables · Sets de aseo.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangdong Baby Kingdom',producto:'Sets recién nacido · Monitores básicos. MOQ 50.',stand:'No confirmado',conf:'no'},
+     {nombre:'Wo Silicone Tech',producto:'Feeding sets silicona: bowls, platos, babero, cuchara.',stand:'No confirmado',conf:'no'},
+     {nombre:'Foshan Yongjianxing Technology',producto:'Babero, bowl y plato de silicona para bebé.',stand:'No confirmado',conf:'no'},
+     {nombre:'Dongguan Shengkai Silicone Products',producto:'Mordedores, feeding sets y vajilla de silicona bebé.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'deco',emoji:'🎁',nombre:'Decoración y Regalos',fase:2,zona:'Halls 13.1–14.2',
    empresas:[
      {nombre:'DH Crafts & Décor',producto:'Resina y madera. MOQ ~50.',stand:'No confirmado',conf:'no'},
      {nombre:'Yiwu Trade Pavilion',producto:'Representa cientos de fábricas de Yiwu.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangzhou Artisan Gift',producto:'Regalos corporativos. MOQ 100.',stand:'No confirmado',conf:'no'},
+     {nombre:'Surmountor Lighting',producto:'LED neon light, COB strip, sensor switch decorativo.',stand:'14.3 H04',conf:'proyectado'},
+     {nombre:'Glamor Optoelectronics Technology',producto:'LED string/rope light, neon flex, motif light.',stand:'14.3 D06–D07',conf:'proyectado'},
+     {nombre:'Yiwu Yun Mai Craftwork',producto:'Árboles de Navidad, guirnaldas y coronas artificiales.',stand:'No confirmado',conf:'no'},
+     {nombre:'Yiwu Mali Tree Christmas Arts and Crafts',producto:'Árboles de Navidad artificiales, 20+ años en el rubro.',stand:'No confirmado',conf:'no'},
+     {nombre:'Shuangyuan Group',producto:'Uno de los mayores fabricantes de decoración navideña de China.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'hogar',emoji:'🏠',nombre:'Hogar y Cocina',fase:2,zona:'Halls 1.1–3.2',
    empresas:[
      {nombre:'Supor / SEB Group',producto:'Sartenes titanio · Woks · Sets utensilios.',stand:'No confirmado',conf:'no'},
      {nombre:'ASD',producto:'Ollas a presión 4-6L · Cacerolas.',stand:'No confirmado',conf:'no'},
      {nombre:'Joyoung Kitchen',producto:'Tablas antibacterianas · Organizadores.',stand:'No confirmado',conf:'no'},
+     {nombre:'Chuzhou Jincheng Home Decoration',producto:'Cajas organizadoras y desktop organizers.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'iluminacion',emoji:'💡',nombre:'Iluminación LED',fase:1,zona:'Halls 9.1–9.4',
    empresas:[
@@ -517,11 +551,18 @@ const CATEGORIAS = [
      {nombre:'NVC Lighting',producto:'Tiras IP65 exterior · Focos PAR.',stand:'No confirmado',conf:'no'},
      {nombre:'MLS Co. Ltd',producto:'Bombillas E27 a granel. MOQ 500.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'epp',emoji:'🦺',nombre:'Herramientas y EPP',fase:1,zona:'Halls 5.1–7.2',
+  {id:'epp',emoji:'🦺',nombre:'EPP, Herramientas y Candados',fase:1,zona:'Halls 5.1–7.2 y 10.1–11.1',
    empresas:[
      {nombre:'Zhejiang Longhua Safety Equipment',producto:'Cascos ABS · Kits EPP. MOQ 200.',stand:'No confirmado',conf:'no'},
      {nombre:'MSA Safety China',producto:'Cascos V-Gard CE/ANSI.',stand:'No confirmado',conf:'no'},
      {nombre:'Deltaplus China',producto:'Guantes anticorte · Calzado S3 SRC.',stand:'No confirmado',conf:'no'},
+     {nombre:'Worksite',producto:'Taladros, amoladoras, sierras, herramienta eléctrica.',stand:'10.2 H33-35 / I13-15',conf:'proyectado'},
+     {nombre:'HANVO Safety',producto:'Guantes de seguridad construcción/jardín/logística.',stand:'10.1 D33-34',conf:'proyectado'},
+     {nombre:'Safetoe',producto:'Calzado de seguridad, guantes, gafas anti-empañantes.',stand:'11.1 A19-20 B03-04',conf:'proyectado'},
+     {nombre:'Blossom',producto:'Candados de latón/hierro/inox, candado con huella digital.',stand:'A-1.1 G47-48, H01-02',conf:'proyectado'},
+     {nombre:'Shandong Xingyu Gloves',producto:'Guantes de protección industrial, 30+ años.',stand:'No confirmado',conf:'no'},
+     {nombre:'Locstar',producto:'Cerraduras inteligentes / candados de acceso.',stand:'10.1 A16-17 & 10.1 B04-05',conf:'proyectado'},
+     {nombre:'Be-Tech',producto:'Cerraduras inteligentes para hogar y hotelería.',stand:'10.1 E35-36, F11-12',conf:'proyectado'},
    ]},
   {id:'electro',emoji:'⚡',nombre:'Electrodomésticos Pequeños',fase:1,zona:'Halls 3.1–4.2',
    empresas:[
@@ -541,11 +582,53 @@ const CATEGORIAS = [
      {nombre:'Guangdong Jiutu Houseware',producto:'Amenities de baño inox.',stand:'No confirmado',conf:'no'},
      {nombre:'Supor Food Service',producto:'Vajilla inox room service.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'ganaderia',emoji:'🐷',nombre:'Ganadería y Agro',fase:1,zona:'Área exterior',
+  {id:'ganaderia',emoji:'🐷',nombre:'Ganadería y Riego',fase:1,zona:'Área exterior norte/sur · Área B',
    empresas:[
      {nombre:'Xinhua Poultry Equipment',producto:'Bebederos nipple · Comederos tolva 10-20kg.',stand:'No confirmado',conf:'no'},
      {nombre:'Henan Muwei Livestock',producto:'Comederos automáticos cerdo · Calefactores.',stand:'No confirmado',conf:'no'},
      {nombre:'Shandong Qinchuan Agro',producto:'Bebederos copa acero galvanizado.',stand:'No confirmado',conf:'no'},
+     {nombre:'Hebei Plentirain Irrigation',producto:'Cinta de goteo, goteros PC, válvulas de riego.',stand:'No confirmado',conf:'no'},
+     {nombre:'Pandora / Taizhou Chunfeng Machinery',producto:'Aspersores y cinta de riego, stand grande.',stand:'No confirmado',conf:'no'},
+     {nombre:'Chinadrip Irrigation Equipment',producto:'Drip line, goteros de compensación, filtros de riego.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'bombas',emoji:'🚰',nombre:'Bombas de Agua',fase:1,zona:'Área B exterior norte (Maquinaria e Industria)',
+   empresas:[
+     {nombre:'Shinhoo',producto:'Bombas de circulación para calefacción/enfriamiento.',stand:'No confirmado',conf:'no'},
+     {nombre:'DAYUAN Pump Industry',producto:'Bombas comerciales de alta eficiencia, expositor recurrente.',stand:'No confirmado',conf:'no'},
+     {nombre:'Lutian Machinery Co.',producto:'Bombas de agua domésticas (también fabrica generadores).',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'solar',emoji:'☀️',nombre:'Placas Solares',fase:1,zona:'Hall 15.2 y 14.2–14.3 (New Energy Resources)',
+   empresas:[
+     {nombre:'Bluesun Solar',producto:'Paneles solares alta eficiencia, sistemas BESS.',stand:'Hall 15.2, C32-33 y D10-11',conf:'proyectado'},
+     {nombre:'Kingfit Energy',producto:'Baterías litio, inversores híbridos/off-grid.',stand:'Hall 15.2, G01-02',conf:'proyectado'},
+     {nombre:'GSO (Jiangsu Green Solar Energy)',producto:'Sistemas de almacenamiento de energía solar.',stand:'Hall 14.3, E26',conf:'proyectado'},
+     {nombre:'Namkoo',producto:'Sistemas de energía solar y almacenamiento.',stand:'Hall 14.2, E04 (edición sin confirmar)',conf:'media'},
+   ]},
+  {id:'generadores',emoji:'🔌',nombre:'Generadores Portátiles',fase:1,zona:'Área B exterior norte (Maquinaria e Industria)',
+   empresas:[
+     {nombre:'Jiangsu ETK Power Technology',producto:'Generadores portátiles diésel 2-5kW.',stand:'No confirmado',conf:'no'},
+     {nombre:'GB Power',producto:'Generadores diésel portátiles 2-5.5kW, insonorizados.',stand:'No confirmado',conf:'no'},
+     {nombre:'JLT Power',producto:'Generadores portátiles a gasolina 2.5-3kW.',stand:'No confirmado',conf:'no'},
+     {nombre:'Lutian Machinery Co.',producto:'Generadores a gasolina 2.0-2.5kW, también bombas de agua.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'sanitarios',emoji:'🚿',nombre:'Griferías y Sanitarios',fase:2,zona:'Halls 8.1–8.4 (Sanitary & Bathroom Equipment)',
+   empresas:[
+     {nombre:'HUAYI (Kaiping)',producto:'Grifería de baño y cocina, fabricante desde 1991.',stand:'No confirmado',conf:'no'},
+     {nombre:'Kaiping City Yibiao Sanitary Ware',producto:'Grifos y mezcladoras de baño.',stand:'No confirmado',conf:'no'},
+     {nombre:'Kaiping City Kaipu Sanitary Ware',producto:'Grifería y sanitarios, expositor en ferias del rubro.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'bienestar',emoji:'💆',nombre:'Masajeadores y Bienestar',fase:2,zona:'Halls 6.1–7.2 (Salud y Bienestar)',
+   empresas:[
+     {nombre:'HighTop',producto:'Masajeadores de hombro/cuello, OEM/ODM.',stand:'No confirmado',conf:'no'},
+     {nombre:'Shenzhen Pentasmart Technology',producto:'Masajeadores portátiles, 13 años en el rubro.',stand:'No confirmado',conf:'no'},
+     {nombre:'DARIUS',producto:'Pistolas de masaje, masajeadores de pie, cuello y hombro.',stand:'No confirmado',conf:'no'},
+     {nombre:'SKG INNO',producto:'Masajeador de cuello, pistola de masaje, marca reconocida.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'macetas',emoji:'🪴',nombre:'Macetas y Jardineras',fase:2,zona:'Halls 6.1/8.0 y 11.1–12.2 (Jardinería)',
+   empresas:[
+     {nombre:'Ronbo Sunrise Plastic',producto:'Macetas plásticas, herramientas de jardín.',stand:'6.1 K24/L23 · 8.0 A25',conf:'media'},
+     {nombre:'Oceangoing Biz',producto:'Macetas y jardineras metálicas, desde US$4.6/pieza.',stand:'No confirmado',conf:'no'},
+     {nombre:'YEAHFLOWER',producto:'Plantas y flores artificiales, decoración de exteriores.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'granizados',emoji:'🍧',nombre:'Máquinas de Granizados y Helados',fase:1,nuevo:true,pri:true,zona:'Halls 3.1–4.2 y zona catering',
    empresas:[
@@ -558,8 +641,186 @@ const CATEGORIAS = [
   {id:'motopartes',emoji:'🏍️',nombre:'Motopartes (🚫 descartado — mercado saturado)',fase:1,zona:'Halls 10.1–10.2',empresas:[]},
   {id:'otros',emoji:'❓',nombre:'Otros / algo nuevo que encontraste',fase:0,zona:null,empresas:[]},
 ];
-const ARANCEL_POR_CAT={loncheras:6,movil:0,ventiladores:6,agua:6,cctv:0,bebe:11,deco:11,hogar:6,iluminacion:6,epp:6,electro:6,audiovisual:0,hoteleria:11,ganaderia:6,granizados:6,motopartes:6,otros:6};
+const ARANCEL_POR_CAT={loncheras:6,movil:0,ventiladores:6,agua:6,cctv:0,bebe:11,deco:11,hogar:6,iluminacion:6,epp:6,electro:6,audiovisual:0,hoteleria:11,ganaderia:6,granizados:6,motopartes:6,otros:6,bombas:6,solar:0,generadores:6,sanitarios:11,bienestar:0,macetas:11};
 const CONF_ICON={alta:'✅',media:'🟡',proyectado:'🔮',no:'⚠️'};
+
+/* ════════════════════════════════════════════════════════════════════════
+   Itinerario día a día (fuente: Itinerario_Feria_Canton_Tablas.xlsx, 1 oct 2026)
+   Cada grupo = una entrada de la Tabla 1 "Por día". pri/opc vienen de ahí.
+   El 3er valor de cada empresa es el stand/zona específico de la Tabla 2
+   "Por tienda" cuando hay uno más preciso que el de todo el grupo.
+   ════════════════════════════════════════════════════════════════════════ */
+const ITINERARIO = [
+ {id:1, fecha:'Dom 18 oct', fase:1, grupos:[
+   {catId:'movil', zona:'Halls 1.1–2.2 · Área A (Consumer Electronics)', pri:1, opc:false, es:[
+     ['Baseus','Cargadores GaN 20-65W, cables USB-C, auriculares BT.',''],
+     ['HOCO Technology','Fundas Samsung/iPhone, cables MFi, altavoces BT.',''],
+     ['Ugreen Group','Hubs USB-C, cables carga rápida, adaptadores.',''],
+     ['Romoss Technology','Power banks 10-20k mAh, versión solar.',''],
+     ['Shenzhen Qihang Chuangshi Technology','Cables y cargadores USB, fabricante/exportador directo.',''],
+   ]},
+   {catId:'cctv', zona:'Halls 1.1–2.2 · Área A (Smart Home)', pri:2, opc:true, es:[
+     ['Hikvision','Kits DVR 4/8 canales + cámaras 2MP, IP PTZ WiFi.',''],
+     ['Dahua Technology','Kits NVR IP 4K, domo antivandálica, alarma integrada.',''],
+     ['Reolink','Cámaras WiFi 4K standalone, batería solar sin cableado.',''],
+   ]},
+   {catId:'granizados', zona:'Zona Granizados y Helados', pri:3, opc:false, es:[
+     ['Oceanpower Food Equipment Tech','Máquinas de helado soft-serve/hard y granizadoras comerciales.','Hall 18.2, D46–D47'],
+     ['ESCOLO','Vitrinas y freezers de refrigeración comercial.','Área D, 20.1 / M28'],
+   ]},
+   {catId:'ventiladores', zona:'Halls 3.1–4.2 · Área A (Electrodomésticos)', pri:4, opc:false, es:[
+     ['Midea Group','Ventilador torre DC, enfriador evaporativo 220V.',''],
+     ['AIRMATE','Ventiladores de techo, fans de escritorio motor-DC.',''],
+     ['Gree Electric Appliances','Fans de columna y techo, serie tropical.',''],
+   ]},
+   {catId:'electro', zona:'Halls 3.1–4.2 (misma área que Ventiladores)', pri:5, opc:true, es:[
+     ['Bear Electric Appliance','Freidoras de aire 3.5-5.5L, licuadoras portátiles USB.',''],
+     ['Midea Kitchen Division','Tostadoras, cafeteras de filtro, microondas compactos.',''],
+     ['Joyoung Appliances','Exprimidores automáticos, batidoras, arroceras mini.',''],
+   ]},
+   {catId:'granizados', zona:'Halls 3.1–4.2 y zona catering (Área D)', pri:6, opc:true, es:[
+     ['Guangzhou Hongling Kitchen Equipment','Granizadoras comerciales 1-3 tanques, 12L/tanque.',''],
+     ['Guangzhou Sawish Kitchen Equipment','Slush machines / cold drink machines comerciales.',''],
+   ]},
+ ]},
+ {id:2, fecha:'Lun 19 oct (último día Fase 1)', fase:1, grupos:[
+   {catId:'bombas', zona:'Área B exterior norte (Maquinaria e Industria)', pri:1, opc:false, es:[
+     ['Shinhoo','Bombas de circulación para calefacción/enfriamiento.',''],
+   ]},
+   {catId:'bombas', zona:'Área B exterior norte (Maquinaria e Industria)', pri:2, opc:true, es:[
+     ['DAYUAN Pump Industry','Bombas comerciales de alta eficiencia, expositor recurrente.',''],
+     ['Lutian Machinery Co.','Bombas de agua domésticas (también fabrica generadores).',''],
+   ]},
+   {catId:'ganaderia', zona:'Área exterior norte/sur · Área B (Maquinaria Agrícola)', pri:3, opc:false, es:[
+     ['Xinhua Poultry Equipment','Bebederos nipple automáticos, comederos tolva 10-20kg.',''],
+   ]},
+   {catId:'ganaderia', zona:'Área exterior norte/sur · Área B (Maquinaria Agrícola)', pri:4, opc:true, es:[
+     ['Hebei Plentirain Irrigation','Cinta de goteo, goteros PC, válvulas de riego.',''],
+     ['Pandora / Taizhou Chunfeng Machinery','Aspersores y cinta de riego, stand grande.',''],
+     ['Henan Muwei Livestock','Comederos automáticos, bebederos de copa, calefactores.',''],
+     ['Shandong Qinchuan Agro','Bebederos de copa acero galvanizado.',''],
+     ['Chinadrip Irrigation Equipment','Drip line, goteros de compensación, filtros de riego.',''],
+   ]},
+   {catId:'solar', zona:'Zona New Energy Resources', pri:5, opc:false, es:[
+     ['Bluesun Solar','Paneles solares alta eficiencia, sistemas BESS.','Hall 15.2, C32-33 y D10-11'],
+     ['Kingfit Energy','Baterías litio, inversores híbridos/off-grid.','Hall 15.2, G01-02'],
+   ]},
+   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:6, opc:false, es:[
+     ['Worksite','Taladros, amoladoras, sierras, herramienta eléctrica.','10.2 H33-35 / I13-15'],
+     ['HANVO Safety','Guantes de seguridad construcción/jardín/logística.','10.1 D33-34'],
+     ['Safetoe','Calzado de seguridad, guantes, gafas anti-empañantes.','11.1 A19-20 B03-04'],
+     ['Blossom','Candados de latón/hierro/inox, candado con huella digital.','A-1.1 G47-48, H01-02'],
+     ['Zhejiang Longhua Safety Equipment','Cascos ABS clase E, kits EPP completos, MOQ 200.',''],
+   ]},
+   {catId:'generadores', zona:'Área B exterior norte (Maquinaria e Industria)', pri:7, opc:true, es:[
+     ['Jiangsu ETK Power Technology','Generadores portátiles diésel 2-5kW.',''],
+     ['GB Power','Generadores diésel portátiles 2-5.5kW, insonorizados.',''],
+     ['JLT Power','Generadores portátiles a gasolina 2.5-3kW.',''],
+     ['Lutian Machinery Co.','Generadores a gasolina 2.0-2.5kW, también bombas de agua.',''],
+   ]},
+   {catId:'solar', zona:'Zona New Energy Resources', pri:8, opc:true, es:[
+     ['GSO (Jiangsu Green Solar Energy)','Sistemas de almacenamiento de energía solar.','Hall 14.3, E26'],
+     ['Namkoo','Sistemas de energía solar y almacenamiento.','Hall 14.2, E04 (edición sin confirmar)'],
+   ]},
+   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:9, opc:true, es:[
+     ['MSA Safety China','Cascos V-Gard CE/ANSI, arneses de altura.',''],
+     ['Deltaplus China','Guantes anticorte N5, calzado S3 SRC.',''],
+     ['Shandong Xingyu Gloves','Guantes de protección industrial, 30+ años.',''],
+     ['Locstar','Cerraduras inteligentes / candados de acceso.','10.1 A16-17 & 10.1 B04-05'],
+     ['Be-Tech','Cerraduras inteligentes para hogar y hotelería.','10.1 E35-36, F11-12'],
+   ]},
+ ]},
+ {id:3, fecha:'Vie 23 oct', fase:2, grupos:[
+   {catId:'loncheras', zona:'Halls 1.1–2.2 · Área A (Kitchenware)', pri:1, opc:false, es:[
+     ['HAERS (哈尔斯)','Termos inox 500ml/1L, sets lonchera 3 compartimentos.','2.2 D42–53'],
+     ['Supor / SEB Group','Loncheras apilables 2-3 niveles, termos mug.',''],
+     ['Guangzhou Imeyon Housewares','Termos OEM con logo, bidones 1.5-2L, MOQ ~100.',''],
+     ['Zhejiang Steel Industry and Trade','Termos y vacuum flasks, expositor recurrente.',''],
+     ['Zhejiang Yihai Industry and Trade','Tumblers inox, botellas deportivas, vacuum flasks.',''],
+   ]},
+   {catId:'loncheras', zona:'Halls 1.1–2.2 · Área A (Kitchenware)', pri:2, opc:true, es:[
+     ['Guangzhou Koodee Metal','Botellas de agua inox, tumblers, mugs de café.',''],
+   ]},
+ ]},
+ {id:4, fecha:'Sáb 24 oct', fase:2, grupos:[
+   {catId:'hogar', zona:'Halls 1.1–3.2 · Área A (mismo edificio que Loncheras)', pri:1, opc:false, es:[
+     ['Supor / SEB Group','Sartenes titanio antiadherente, woks 32cm, sets utensilios.',''],
+     ['ASD (爱仕达)','Ollas a presión 4-6L, sets de cacerolas exportación.',''],
+     ['Joyoung Kitchen','Tablas antibacterianas, organizadores, cuchillos premium.',''],
+     ['Chuzhou Jincheng Home Decoration','Cajas organizadoras y desktop organizers.',''],
+   ]},
+   {catId:'sanitarios', zona:'Halls 8.1–8.4 · Área B/C (Sanitary & Bathroom Equipment)', pri:2, opc:false, es:[
+     ['HUAYI (Kaiping)','Grifería de baño y cocina, fabricante desde 1991.',''],
+   ]},
+   {catId:'sanitarios', zona:'Halls 8.1–8.4 · Área B/C (Sanitary & Bathroom Equipment)', pri:3, opc:true, es:[
+     ['Kaiping City Yibiao Sanitary Ware','Grifos y mezcladoras de baño.',''],
+     ['Kaiping City Kaipu Sanitary Ware','Grifería y sanitarios, expositor en ferias del rubro.',''],
+   ]},
+ ]},
+ {id:5, fecha:'Dom 25 oct', fase:2, grupos:[
+   {catId:'agua', zona:'Halls 6.1–7.2 · Área B (Medical & Health)', pri:1, opc:false, es:[
+     ['Angel Water / ANGEL Group','Purificadores countertop 4 etapas, jarras, UV portátil.',''],
+     ['Frizzlife','Filtros de grifo universal, under-sink sin tanque.',''],
+     ['Royalstar Appliances','Dispensadores hot/cold de botellón y sin botellón.',''],
+   ]},
+   {catId:'bienestar', zona:'Halls 6.1–7.2 · Área B (Salud y Bienestar)', pri:2, opc:false, es:[
+     ['HighTop','Masajeadores de hombro/cuello, OEM/ODM.',''],
+     ['Shenzhen Pentasmart Technology','Masajeadores portátiles, 13 años en el rubro.',''],
+   ]},
+   {catId:'bienestar', zona:'Halls 6.1–7.2 · Área B (Salud y Bienestar)', pri:3, opc:true, es:[
+     ['DARIUS','Pistolas de masaje, masajeadores de pie, cuello y hombro.',''],
+     ['SKG INNO','Masajeador de cuello, pistola de masaje, marca reconocida.',''],
+   ]},
+ ]},
+ {id:6, fecha:'Lun 26 oct', fase:2, grupos:[
+   {catId:'bebe', zona:'Halls 7.1–8.2 · Área B (Consumer Goods)', pri:1, opc:false, es:[
+     ['Nuby','Mordedores silicona, biberones anticólico, cubiertos bebé.',''],
+     ['B-Duck Baby Products','Bañeras plegables, termómetros de bañera, sets de aseo.',''],
+     ['Guangdong Baby Kingdom','Sets recién nacido, almohadas ergonómicas, monitores básicos.',''],
+     ['Wo Silicone Tech','Feeding sets silicona: bowls, platos, babero, cuchara.',''],
+     ['Foshan Yongjianxing Technology','Babero, bowl y plato de silicona para bebé.',''],
+   ]},
+   {catId:'bebe', zona:'Halls 7.1–8.2 · Área B (Consumer Goods)', pri:2, opc:true, es:[
+     ['Dongguan Shengkai Silicone Products','Mordedores, feeding sets y vajilla de silicona bebé.',''],
+   ]},
+ ]},
+ {id:7, fecha:'Mar 27 oct', fase:2, grupos:[
+   {catId:'deco', zona:'Halls 13.1–14.2 · Área D (Gifts & Home Decorations)', pri:1, opc:false, es:[
+     ['Surmountor Lighting','LED neon light, COB strip, sensor switch decorativo.','14.3 H04'],
+     ['DH Crafts & Décor','Decorativos de resina y madera, MOQ bajo (~50 uds).',''],
+     ['Yiwu Trade Pavilion','Representa cientos de fabricantes de Yiwu, precio de fábrica.',''],
+     ['Guangzhou Artisan Gift','Regalos corporativos personalizables, MOQ 100.',''],
+     ['Glamor Optoelectronics Technology','LED string/rope light, neon flex, motif light.','Hall 14.3 D06–D07'],
+   ]},
+   {catId:'deco', zona:'Halls 13.1–14.2 · Área D (Gifts & Home Decorations)', pri:2, opc:true, es:[
+     ['Yiwu Yun Mai Craftwork','Árboles de Navidad, guirnaldas y coronas artificiales.',''],
+     ['Yiwu Mali Tree Christmas Arts and Crafts','Árboles de Navidad artificiales, 20+ años en el rubro.',''],
+     ['Shuangyuan Group','Uno de los mayores fabricantes de decoración navideña de China.',''],
+   ]},
+   {catId:'hoteleria', zona:'Halls 1.1–3.2 y 9.1–9.2 · Área A/C (vajilla y cerámica)', pri:3, opc:true, es:[
+     ['Guangzhou Brilliant Ceramics','Porcelana personalizable con logo hotel, sets desayuno.',''],
+     ['Guangdong Jiutu Houseware','Amenities de baño hotel, acero inox.',''],
+     ['Supor Food Service','Vajilla inox room service, bandejas, cafeteras.',''],
+   ]},
+   {catId:'macetas', zona:'Halls 6.1/8.0 y 11.1–12.2 (Jardinería)', pri:4, opc:true, es:[
+     ['Ronbo Sunrise Plastic','Macetas plásticas, herramientas de jardín.','6.1 K24/L23 · 8.0 A25 (edición no confirmada)'],
+     ['Oceangoing Biz','Macetas y jardineras metálicas, desde US$4.6/pieza.',''],
+     ['YEAHFLOWER','Plantas y flores artificiales, decoración de exteriores.',''],
+   ]},
+ ]},
+ {id:'sup', fecha:'Sin día fijo — suplentes', fase:null, grupos:[
+   {catId:'audiovisual', zona:'Halls 1.1–2.2', pri:null, opc:true, es:[
+     ['DSPPA Audio','Amplificadores 100-500W, mezcladores.',''],
+     ['Boya Microphones','Micrófonos wireless, 60% más barato.',''],
+     ['XTUGA Audio','Monitor in-ear económico.',''],
+   ]},
+   {catId:'iluminacion', zona:'Halls 9.1–9.4', pri:null, opc:true, es:[
+     ['Opple Lighting','Paneles LED 60x60 40W, downlights.',''],
+     ['NVC Lighting','Tiras IP65 exterior, focos PAR.',''],
+     ['MLS Co.','Bombillas E27 a granel, MOQ 500.',''],
+   ]},
+ ]},
+];
 
 /* ════════════════════════════════════════════════════════════════════════
    Estado en memoria
@@ -586,12 +847,18 @@ async function init(){
   if(cfgRow) cfg={...cfg, ...cfgRow.val};
 
   CHECKLIST=await idbGetAll('checklist');
-  if(!CHECKLIST.length) await seedChecklist();
+  const checklistEsLegado = CHECKLIST.length && CHECKLIST.some(c=>c.diaId===undefined);
+  if(!CHECKLIST.length || checklistEsLegado){
+    if(checklistEsLegado) await idbClear('checklist'); // versión anterior organizada por Fase, no por Día
+    CHECKLIST=[];
+    await seedChecklist();
+  }
   PROVEEDORES=await idbGetAll('proveedores');
 
   poblarSelectCategorias();
   addTierRow();
   addCalcTierRow();
+  renderDiaChips();
   renderChecklist();
   renderLista();
 
@@ -602,15 +869,19 @@ async function init(){
 
 async function seedChecklist(){
   let i=0;
-  for(const cat of CATEGORIAS){
-    for(const e of cat.empresas){
-      const item={
-        id:'seed_'+(i++), catId:cat.id, catNombre:cat.nombre, catEmoji:cat.emoji,
-        fase:cat.fase, zona:cat.zona, empresa:e.nombre, producto:e.producto,
-        stand:e.stand, conf:e.conf, visitado:false, custom:false
-      };
-      await idbPut('checklist', item);
-      CHECKLIST.push(item);
+  for(const dia of ITINERARIO){
+    for(const g of dia.grupos){
+      const cat=CATEGORIAS.find(c=>c.id===g.catId);
+      for(const [empresa,producto,standPreciso] of g.es){
+        const item={
+          id:'seed_'+(i++), diaId:dia.id, diaFecha:dia.fecha, fase:dia.fase,
+          catId:g.catId, catNombre:cat?cat.nombre:g.catId, catEmoji:cat?cat.emoji:'📦',
+          zona:g.zona, pri:g.pri, opc:g.opc,
+          empresa, producto, stand:standPreciso||'', visitado:false, custom:false
+        };
+        await idbPut('checklist', item);
+        CHECKLIST.push(item);
+      }
     }
   }
 }
@@ -631,37 +902,85 @@ function setTab(v){
 /* ════════════════════════════════════════════════════════════════════════
    CHECKLIST
    ════════════════════════════════════════════════════════════════════════ */
-let chkFaseFilter='all';
-function setChkFase(f,btn){
-  chkFaseFilter=f;
-  document.querySelectorAll('.chip-f').forEach(b=>b.classList.remove('act'));
-  btn.classList.add('act');
+let chkDiaActual=1;
+function renderDiaChips(){
+  const wrap=document.getElementById('chk-dia-chips');
+  wrap.innerHTML=ITINERARIO.map(d=>{
+    const label=(d.id==='sup')?'Suplentes':('Día '+d.id);
+    return `<div class="chk-dia-chip ${d.id===chkDiaActual?'act':''}" onclick="irADia('${d.id}')"><b>${label}</b><span>${d.fecha.split(' (')[0]}</span></div>`;
+  }).join('');
+}
+function irADia(id){
+  chkDiaActual=(id==='sup')?'sup':parseInt(id);
+  renderDiaChips();
   renderChecklist();
 }
 function renderChecklist(){
   const soloPend=document.getElementById('chk-solo-pend').checked;
-  let list=CHECKLIST.filter(c=>{
-    if(chkFaseFilter!=='all' && String(c.fase)!==chkFaseFilter) return false;
-    if(soloPend && c.visitado) return false;
-    return true;
-  });
-  list.sort((a,b)=> (a.visitado===b.visitado?0:(a.visitado?1:-1)) || a.catNombre.localeCompare(b.catNombre));
+  const dia=ITINERARIO.find(d=>d.id===chkDiaActual);
+  const items=CHECKLIST.filter(c=>c.diaId===chkDiaActual);
+
+  const totalEmp=items.length;
+  const totalOpc=items.filter(c=>c.opc).length;
+  const totalDone=items.filter(c=>c.visitado).length;
+  const sum=document.getElementById('chk-dia-summary');
+  if(dia.id==='sup'){
+    sum.innerHTML=`<div><div class="f">🗂️ Suplentes</div><div class="s">Sin día asignado — respaldo si sobra tiempo</div></div><div class="c"><b>${totalEmp}</b>empresas</div>`;
+  } else {
+    sum.innerHTML=`<div><div class="f">${dia.fecha}</div><div class="s">Fase ${dia.fase} · ${totalEmp-totalOpc} imprescindibles · ${totalOpc} opcionales</div></div><div class="c"><b>${totalDone}/${totalEmp}</b>visitadas</div>`;
+  }
+
+  // agrupar manteniendo el orden del itinerario (por pri, y dentro de pri por categoría)
+  const grupos=[];
+  for(const g of dia.grupos){
+    const es=items.filter(c=>c.catId===g.catId && c.pri===g.pri && c.opc===g.opc && !c.custom);
+    if(es.length) grupos.push({g, es});
+  }
+  const customItems=items.filter(c=>c.custom);
+
   const cont=document.getElementById('chk-lista');
-  if(!list.length){ cont.innerHTML='<div class="empty">Nada que mostrar con este filtro.</div>'; return; }
-  cont.innerHTML=list.map(c=>`
+  let html = dia.id==='sup' ? `<div class="chk-sup-note">📦 Bajadas de prioridad por decisión tuya — van aquí como respaldo, no tienen día fijo en el itinerario.</div>` : '';
+
+  const filaEmpresa=c=>{
+    if(soloPend && c.visitado) return '';
+    return `
     <div class="chk-item ${c.visitado?'done':''}">
       <div class="chk-top">
         <input type="checkbox" ${c.visitado?'checked':''} onchange="toggleVisitado('${c.id}', this.checked)">
         <div style="flex:1;min-width:0" onclick="toggleDetalle('${c.id}')">
-          <div class="chk-nombre ${c.visitado?'done':''}">${c.catEmoji} ${c.empresa}</div>
-          <div class="chk-meta">${c.catNombre} · Fase ${c.fase||'?'} ${c.custom?'<span class="chk-badge" style="background:#EDE9FE;color:#6D28D9">Añadida por ti</span>':''} ${c.conf?`<span class="chk-badge" style="background:#F1F5F9;color:#475569">${CONF_ICON[c.conf]||''} ${c.stand&&c.stand!=='No confirmado'?c.stand:c.zona||''}</span>`:''}</div>
-          <div class="chk-detail" id="det-${c.id}">${c.producto||''}</div>
+          <div class="chk-nombre ${c.visitado?'done':''}">${c.empresa}</div>
+          <div class="chk-detail" id="det-${c.id}">${c.producto||''}${c.stand?' · 📍 '+c.stand:''}</div>
         </div>
       </div>
       <div class="chk-actions">
         <button class="mini" onclick="irARegistrar('${c.id}')">✍️ Registrar visita</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  };
+
+  if(!grupos.length && !customItems.length){
+    cont.innerHTML=html+'<div class="empty">Nada que mostrar con este filtro.</div>';
+    return;
+  }
+
+  grupos.forEach(({g,es})=>{
+    const cat=CATEGORIAS.find(x=>x.id===g.catId);
+    const filas=es.map(filaEmpresa).join('');
+    if(soloPend && !filas.trim()) return; // todo el grupo ya visitado
+    html+=`<div class="chk-grupo-head">
+      <div><div class="chk-grupo-title">${cat?cat.emoji:'📦'} ${cat?cat.nombre:g.catId}</div><div class="chk-grupo-zona">${g.zona||''}</div></div>
+      <div class="chk-grupo-badges">${g.pri?`<span class="chk-badge-pri">Prioridad ${g.pri}</span>`:''}<span class="${g.opc?'chk-badge-opc':'chk-badge-imp'}">${g.opc?'Opcional':'Imprescindible'}</span></div>
+    </div>${filas || '<div class="empty" style="padding:14px 0">Todo visitado en este grupo ✓</div>'}`;
+  });
+
+  if(customItems.length){
+    const filas=customItems.map(filaEmpresa).join('');
+    if(!(soloPend && !filas.trim())){
+      html+=`<div class="chk-grupo-head"><div><div class="chk-grupo-title">🆕 Añadidas por ti</div></div></div>${filas}`;
+    }
+  }
+
+  cont.innerHTML=html;
 }
 function toggleDetalle(id){
   const el=document.getElementById('det-'+id);
@@ -684,15 +1003,24 @@ function irARegistrar(id){
   if([...sel.options].some(o=>o.value===c.catId)){ sel.value=c.catId; onCatChange(); }
   document.getElementById('f-stand').value = (c.stand && c.stand!=='No confirmado') ? c.stand : (c.zona||'');
 }
-function abrirAddChecklist(){ document.getElementById('modal-add-chk').classList.add('v'); }
+function abrirAddChecklist(){
+  const sel=document.getElementById('ac-dia');
+  sel.innerHTML=ITINERARIO.map(d=>`<option value="${d.id}">${d.id==='sup'?'Suplentes':'Día '+d.id} — ${d.fecha}</option>`).join('');
+  sel.value=String(chkDiaActual);
+  document.getElementById('modal-add-chk').classList.add('v');
+}
 function cerrarAddChecklist(){ document.getElementById('modal-add-chk').classList.remove('v'); }
 async function guardarAddChecklist(){
   const nombre=document.getElementById('ac-nombre').value.trim();
   if(!nombre){ alert('Ponle un nombre.'); return; }
+  const diaVal=document.getElementById('ac-dia').value;
+  const diaId=(diaVal==='sup')?'sup':parseInt(diaVal);
+  const dia=ITINERARIO.find(d=>d.id===diaId);
   const item={
-    id:uid(), catId:'custom', catNombre:document.getElementById('ac-cat').value.trim()||'Sin categoría',
-    catEmoji:'🆕', fase:document.getElementById('ac-fase').value, zona:'',
-    empresa:nombre, producto:'', stand:document.getElementById('ac-hall').value.trim()||'No confirmado',
+    id:uid(), diaId, diaFecha:dia?dia.fecha:'', fase:dia?dia.fase:null,
+    catId:'custom', catNombre:document.getElementById('ac-cat').value.trim()||'Sin categoría',
+    catEmoji:'🆕', zona:'', pri:null, opc:false,
+    empresa:nombre, producto:'', stand:document.getElementById('ac-hall').value.trim()||'',
     conf:'no', visitado:false, custom:true
   };
   await idbPut('checklist', item);
