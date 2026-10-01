@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Feria Cantón — Registro v2</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-180.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#1E3A5F"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F8FAFC;color:#0F172A;padding-bottom:64px;-webkit-tap-highlight-color:transparent}
+:root{--navy:#1E3A5F;--teal:#14B8A6;--teal2:#0D9488;--border:#E2E8F0;--muted:#64748B;--gold:#D97706;--green:#16A34A;--red:#DC2626;--purple:#7C3AED}
+header{background:var(--navy);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{font-size:15px;font-weight:800}
+header p{font-size:10.5px;opacity:.75;margin-top:1px}
+.gear{background:rgba(255,255,255,.12);border:none;color:#fff;font-size:17px;width:34px;height:34px;border-radius:8px;flex-shrink:0}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:54px;z-index:49;overflow-x:auto}
+.tab{flex:1;padding:10px 4px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;min-width:62px}
+.tab .ico{display:block;font-size:16px;margin-bottom:1px}
+.tab.act{color:var(--navy);border-color:var(--teal)}
+main{padding:14px}
+.view{display:none}
+.view.act{display:block}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;background:#fff}
+.fg textarea{resize:vertical;min-height:44px}
+.fg .hint{font-weight:400;color:#94A3B8;font-size:11px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stars{display:flex;gap:6px;font-size:24px;cursor:pointer;user-select:none}
+.star{color:#D1D9E0}
+.star.on{color:var(--gold)}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-prim{background:var(--teal);color:#fff}
+.btn-prim:active{background:var(--teal2)}
+.btn-sec{background:#F1F5F9;color:var(--navy)}
+.btn-sm{width:auto;padding:8px 14px;font-size:13px;display:inline-block}
+.section-lbl{font-size:11px;font-weight:800;color:var(--teal2);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.section-lbl:first-child{margin-top:0;border-top:none;padding-top:0}
+
+.cat-info{background:#F0FDFA;border:1px solid #99F6E4;border-radius:10px;padding:10px 12px;margin-top:6px;font-size:12px;color:#0F172A;display:none}
+.cat-info b{color:var(--navy)}
+.cat-info .fase-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:6px;background:#DCFCE7;color:#166534}
+.cat-info .empresa{margin-top:5px;padding-top:5px;border-top:1px dashed #99F6E4;line-height:1.5}
+.cat-info .empresa .conf{font-size:10px;margin-left:4px}
+
+/* Fotos triple slot */
+.foto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.foto-slot{text-align:center}
+.foto-slot label.lbl{display:block;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.foto-box{width:100%;aspect-ratio:1;border:1.5px dashed var(--border);border-radius:10px;background:#F8FAFC;display:flex;align-items:center;justify-content:center;font-size:22px;color:#CBD5E1;overflow:hidden;position:relative}
+.foto-box img{width:100%;height:100%;object-fit:cover}
+.foto-box input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.foto-save-btn{position:absolute;bottom:3px;right:3px;background:rgba(15,23,42,.72);color:#fff;border:none;border-radius:6px;font-size:12px;padding:4px 6px;line-height:1;font-weight:700;z-index:2;animation:pulse-save 1.4s ease-in-out 2}
+.foto-save-btn.ok{background:rgba(22,163,74,.88);animation:none}
+@keyframes pulse-save{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.carrete-banner{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:9px 11px;margin-bottom:10px;font-size:12px;color:#92400E;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.carrete-banner button{flex-shrink:0;background:#D97706;color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700}
+.prod-fotos{position:relative}
+.prod-fotos .foto-thumb{position:relative;display:inline-block}
+.prod-fotos .foto-save-btn{bottom:1px;right:1px;font-size:10px;padding:3px 4px;animation:none}
+
+/* Tramos de precio */
+.tier-row{display:grid;grid-template-columns:1fr 1fr 64px 30px;gap:6px;margin-bottom:6px;align-items:center}
+.tier-row input,.tier-row select{padding:8px;font-size:13px;border:1.5px solid var(--border);border-radius:7px}
+.tier-rm{background:#FEF2F2;color:var(--red);border:1.5px solid #FECACA;border-radius:7px;font-weight:800;font-size:14px}
+.add-link{font-size:12px;font-weight:700;color:var(--teal2);background:none;border:none;cursor:pointer;padding:4px 0}
+
+/* Preguntas */
+.qa-chip{display:inline-block;font-size:11px;font-weight:600;background:#F1F5F9;color:var(--navy);border:1px solid var(--border);border-radius:14px;padding:5px 10px;margin:0 5px 5px 0;cursor:pointer}
+.qa-row{background:#F8FAFC;border:1px solid var(--border);border-radius:8px;padding:8px;margin-bottom:6px}
+.qa-row .qh{display:flex;justify-content:space-between;gap:6px;margin-bottom:4px}
+.qa-row input{font-weight:700;font-size:12.5px;border:none;background:transparent;padding:0;width:100%}
+.qa-row textarea{border:1.5px solid var(--border);border-radius:6px;padding:6px;font-size:13px;min-height:36px}
+
+/* Checklist */
+.chk-filtros{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.chip-f{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted)}
+.chip-f.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chk-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.chk-item.done{opacity:.55}
+.chk-top{display:flex;gap:10px;align-items:flex-start}
+.chk-top input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex-shrink:0}
+.chk-nombre{font-weight:800;font-size:13.5px}
+.chk-nombre.done{text-decoration:line-through}
+.chk-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.chk-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px}
+.chk-detail{font-size:12px;color:#334155;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);display:none;line-height:1.5}
+.chk-detail.v{display:block}
+.chk-actions{display:flex;gap:6px;margin-top:6px}
+
+/* Lista */
+.filtros{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto}
+.filtros select{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:#fff;flex-shrink:0}
+.prod{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;padding:10px 12px}
+.prod-fotos{display:flex;gap:4px;margin-bottom:6px}
+.prod-fotos img{width:52px;height:52px;object-fit:cover;border-radius:6px;background:#EEF2F7}
+.prod-top{display:flex;justify-content:space-between;gap:8px}
+.prod-nombre{font-weight:800;font-size:14.5px}
+.prod-cat{font-size:10.5px;color:var(--teal2);font-weight:700;text-transform:uppercase}
+.prod-precio{font-weight:800;color:var(--navy);font-size:13.5px;white-space:nowrap;text-align:right}
+.prod-meta{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.prod-stars{color:var(--gold);font-size:13px;margin-top:3px}
+.prod-fin{display:flex;gap:8px;margin-top:6px;font-size:11px;flex-wrap:wrap}
+.prod-fin span{background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:3px 7px}
+.prod-fin .ok{color:var(--green);border-color:#BBF7D0;background:#F0FDF4}
+.prod-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--navy)}
+.chk input{width:18px;height:18px}
+.mini{padding:5px 10px;font-size:11.5px;font-weight:700;border-radius:6px;border:1.5px solid var(--border);background:#fff;color:var(--muted)}
+.mini.del{color:var(--red);border-color:#FECACA}
+.sync-pill{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:8px}
+.sync-pill.no{background:#FEF3C7;color:#92400E}
+.sync-pill.si{background:#DCFCE7;color:#166534}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+
+/* Calculadora */
+.calc-tier-row{display:flex;justify-content:space-between;background:#F8FAFC;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12.5px}
+.calc-tier-row.best{background:#F0FDF4;border-color:#BBF7D0}
+.calc-kpi{background:linear-gradient(135deg,var(--navy),#15304a);color:#fff;border-radius:12px;padding:16px;text-align:center;margin-bottom:12px}
+.calc-kpi .v{font-size:26px;font-weight:800}
+.calc-kpi .l{font-size:11px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+
+/* Comparador */
+.comp-wrap{overflow-x:auto}
+table.cmp{width:100%;border-collapse:collapse;font-size:12px;min-width:340px}
+table.cmp th,table.cmp td{padding:7px 9px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+table.cmp th{background:#F8FAFC;font-size:10.5px;color:var(--muted);text-transform:uppercase}
+table.cmp img{width:52px;height:52px;object-fit:cover;border-radius:6px}
+table.cmp .fin-row td{font-weight:700;color:var(--navy)}
+
+/* Modal */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:99;align-items:flex-end;justify-content:center}
+.modal-ov.v{display:flex}
+.modal-box{background:#fff;border-radius:16px 16px 0 0;padding:18px 16px 24px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto}
+.modal-box h2{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.modal-box .sub{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+.status-line{font-size:11.5px;padding:8px 10px;border-radius:8px;margin-bottom:10px}
+.status-line.ok{background:#F0FDF4;color:#166534}
+.status-line.warn{background:#FFFBEB;color:#92400E}
+
+.export-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:8px 12px;display:flex;gap:6px;z-index:60}
+.export-bar button{flex:1;padding:10px 4px;border-radius:9px;font-size:11.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🇨🇳 Feria Cantón — v2</h1>
+    <p>Offline · se guarda en tu teléfono</p>
+  </div>
+  <button class="gear" onclick="abrirAjustes()">⚙️</button>
+</header>
+
+<div class="tabs">
+  <div class="tab act" data-v="check" onclick="setTab('check')"><span class="ico">📋</span>Checklist</div>
+  <div class="tab" data-v="add" onclick="setTab('add')"><span class="ico">✍️</span>Registrar</div>
+  <div class="tab" data-v="list" onclick="setTab('list')"><span class="ico">📑</span>Lista</div>
+  <div class="tab" data-v="calc" onclick="setTab('calc')"><span class="ico">🧮</span>Calc</div>
+  <div class="tab" data-v="cmp" onclick="setTab('cmp')"><span class="ico">⚖️</span>Comparar</div>
+</div>
+
+<main>
+
+  <!-- CHECKLIST -->
+  <div class="view act" id="v-check">
+    <div class="chk-filtros">
+      <button class="chip-f act" data-f="all" onclick="setChkFase('all',this)">Todas</button>
+      <button class="chip-f" data-f="1" onclick="setChkFase('1',this)">Fase 1</button>
+      <button class="chip-f" data-f="2" onclick="setChkFase('2',this)">Fase 2</button>
+      <label class="chk" style="margin-left:auto"><input type="checkbox" id="chk-solo-pend" onchange="renderChecklist()"> Solo pendientes</label>
+    </div>
+    <div id="chk-lista"></div>
+    <button class="btn btn-sec" style="margin-top:6px" onclick="abrirAddChecklist()">+ Añadir empresa que encontré</button>
+  </div>
+
+  <!-- REGISTRAR -->
+  <div class="view" id="v-add">
+    <div class="card">
+
+      <div class="section-lbl">Proveedor / producto</div>
+      <div class="fg">
+        <label>Nombre del proveedor o producto *</label>
+        <input id="f-nombre" type="text" placeholder="Ej: Sr. Li — Purificadores countertop"/>
+      </div>
+      <div class="row2">
+        <div class="fg">
+          <label>Categoría</label>
+          <select id="f-cat" onchange="onCatChange()"></select>
+        </div>
+        <div class="fg">
+          <label>Rating</label>
+          <div class="stars" id="f-stars">
+            <span class="star" data-n="1">★</span><span class="star" data-n="2">★</span>
+            <span class="star" data-n="3">★</span><span class="star" data-n="4">★</span>
+            <span class="star" data-n="5">★</span>
+          </div>
+        </div>
+      </div>
+      <div class="fg" id="f-cat-otro-wrap" style="display:none">
+        <label>¿Qué categoría es?</label>
+        <input id="f-cat-otro" type="text" placeholder="Escribe la categoría que encontraste"/>
+      </div>
+      <div class="cat-info" id="cat-info"></div>
+
+      <div class="row2">
+        <div class="fg">
+          <label>MOQ</label>
+          <input id="f-moq" type="text" placeholder="Ej: 500 unidades"/>
+        </div>
+        <div class="fg">
+          <label>Stand / Hall</label>
+          <input id="f-stand" type="text" placeholder="Ej: 18.2 D46-47"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Contacto (WeChat, tel, email)</label>
+        <input id="f-proveedor" type="text" placeholder="Ej: WeChat: abc123 · Sr. Li"/>
+      </div>
+
+      <div class="section-lbl">Fotos</div>
+      <div class="foto-grid">
+        <div class="foto-slot">
+          <label class="lbl">Producto</label>
+          <div class="foto-box" id="box-producto">📦<input type="file" accept="image/*" capture="environment" onchange="onFoto(event,'producto')"></div>
+        </div>
+        <div class="foto-slot">
+          <label class="lbl">Tarjeta</label>
+          <div class="foto-box" id="box-tarjeta">🪪<input type="file" accept="image/*" capture="environment" onchange="onFoto(event,'tarjeta')"></div>
+        </div>
+        <div class="foto-slot">
+          <label class="lbl">Contacto</label>
+          <div class="foto-box" id="box-contacto">🙂<input type="file" accept="image/*" capture="environment" onchange="onFoto(event,'contacto')"></div>
+        </div>
+      </div>
+
+      <div class="section-lbl">Precio por cantidad <span class="hint" style="text-transform:none;font-weight:400;color:#94A3B8">(el precio real depende de cuánto compres — anota cada tramo que te dé el proveedor)</span></div>
+      <div id="tiers-wrap"></div>
+      <button class="add-link" onclick="addTierRow()">+ Añadir tramo de precio</button>
+
+      <div class="section-lbl">Preguntas que le hiciste</div>
+      <div id="qa-wrap"></div>
+      <div style="margin:4px 0 8px">
+        <span class="qa-chip" onclick="addQaChip('¿Precio por distintas cantidades?')">¿Precio por cantidad?</span>
+        <span class="qa-chip" onclick="addQaChip('¿Cuál es el MOQ?')">¿MOQ?</span>
+        <span class="qa-chip" onclick="addQaChip('¿Tiempo de producción?')">¿Tiempo producción?</span>
+        <span class="qa-chip" onclick="addQaChip('¿Qué certificaciones tiene?')">¿Certificaciones?</span>
+        <span class="qa-chip" onclick="addQaChip('¿Formas de pago aceptadas?')">¿Formas de pago?</span>
+      </div>
+      <button class="add-link" onclick="addQaRow()">+ Añadir pregunta libre</button>
+
+      <div class="section-lbl">Para la calculadora <span class="hint" style="text-transform:none;font-weight:400;color:#94A3B8">(opcional, para estimar rentabilidad)</span></div>
+      <div class="row3">
+        <div class="fg">
+          <label>Peso/ud <span class="hint">(kg)</span></label>
+          <input id="f-peso" type="number" step="0.001" placeholder="0.5"/>
+        </div>
+        <div class="fg">
+          <label>Volumen/ud <span class="hint">(m³)</span></label>
+          <input id="f-vol" type="number" step="0.0001" placeholder="0.003"/>
+        </div>
+        <div class="fg">
+          <label>Cantidad a evaluar</label>
+          <input id="f-cantidad" type="number" placeholder="500"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Arancel SUNAT <span class="hint">(se sugiere solo, editable)</span></label>
+        <select id="f-arancel">
+          <option value="0">0% — Electrónica de consumo, computadoras, teléfonos</option>
+          <option value="6">6% — Productos industriales, herramientas, textiles básicos</option>
+          <option value="11">11% — Ropa confeccionada, calzado, juguetes, plásticos</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label>Notas</label>
+        <textarea id="f-nota" placeholder="Calidad percibida, negociación, comparado con otro stand..."></textarea>
+      </div>
+
+      <button class="btn btn-prim" onclick="guardarProducto()">Guardar registro</button>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div class="view" id="v-list">
+    <div id="carrete-banner-wrap"></div>
+    <div class="filtros">
+      <select id="ord-cat" onchange="renderLista()">
+        <option value="">Todas las categorías</option>
+      </select>
+      <select id="ord-by" onchange="renderLista()">
+        <option value="fecha">Más recientes</option>
+        <option value="precio">Precio: menor a mayor</option>
+        <option value="rating">Rating: mayor a menor</option>
+        <option value="ganancia">Ganancia potencial: mayor a menor</option>
+      </select>
+    </div>
+    <div id="lista"></div>
+  </div>
+
+  <!-- CALCULADORA -->
+  <div class="view" id="v-calc">
+    <div class="card">
+      <div class="fg">
+        <label>Usar datos de un registro guardado (opcional)</label>
+        <select id="calc-pick" onchange="calcCargarDeRegistro()"><option value="">— Cálculo libre —</option></select>
+      </div>
+      <div class="row3">
+        <div class="fg"><label>Peso/ud (kg)</label><input id="c-peso" type="number" step="0.001"/></div>
+        <div class="fg"><label>Volumen/ud (m³)</label><input id="c-vol" type="number" step="0.0001"/></div>
+        <div class="fg"><label>Arancel %</label><input id="c-arancel" type="number" value="6"/></div>
+      </div>
+      <div class="section-lbl">Tramos de precio a evaluar</div>
+      <div id="calc-tiers-wrap"></div>
+      <button class="add-link" onclick="addCalcTierRow()">+ Añadir tramo</button>
+      <button class="btn btn-prim" style="margin-top:10px" onclick="calcularTodo()">Calcular todos los tramos</button>
+    </div>
+    <div id="calc-resultado"></div>
+  </div>
+
+  <!-- COMPARAR -->
+  <div class="view" id="v-cmp">
+    <div id="cmp-empty" class="empty">Marca "Comparar" en 2 o más registros desde la Lista.</div>
+    <div class="comp-wrap"><table class="cmp" id="cmp-table" style="display:none"></table></div>
+  </div>
+
+</main>
+
+<div class="export-bar">
+  <button onclick="exportarJSON()">📤 Exportar todo</button>
+  <button onclick="exportarCSV()">⬇️ CSV</button>
+  <button onclick="compartirWhatsApp()">📲 WhatsApp</button>
+</div>
+
+<!-- MODAL AJUSTES -->
+<div class="modal-ov" id="modal-ajustes">
+  <div class="modal-box">
+    <h2>Ajustes</h2>
+    <div class="sub">Todo se guarda en tu teléfono.</div>
+
+    <div id="sync-status"></div>
+
+    <div class="section-lbl">Cálculo</div>
+    <div class="row2">
+      <div class="fg"><label>Tipo de cambio S//$</label><input id="cfg-tc" type="number" step="0.01" value="3.75"/></div>
+      <div class="fg"><label>Margen deseado %</label><input id="cfg-margen" type="number" step="1" value="30"/></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Meses inventario Tarapoto</label><input id="cfg-meses" type="number" step="1" value="3"/></div>
+      <div class="fg"><label>Contingencia %</label><input id="cfg-cont" type="number" step="1" value="5"/></div>
+    </div>
+    <div class="fg" style="font-size:11px;color:#94A3B8;line-height:1.6">
+      Constantes fijas (de calculadora_importacion.html): flete LCL $55/m³ (mín $280) ·
+      seguro 0.4% CIF · agente aduanas $350 · THC+almacén puerto $210 · flete terrestre Callao→Tarapoto
+      $180/ton (mín $350) · almacén Tarapoto S//350 mes.
+    </div>
+
+    <div class="section-lbl">Respaldo automático en la nube (opcional)</div>
+    <div class="fg" style="font-size:11.5px;color:#64748B;line-height:1.5">
+      Si lo dejas vacío la app funciona 100% igual, solo local. Cuando tengas internet y hayas creado
+      estas cuentas gratis, pega los datos aquí y la app sincronizará solita en segundo plano
+      (nunca bloquea ni te pide nada mientras trabajas).
+    </div>
+    <div class="fg"><label>URL de Google Apps Script (texto/registros)</label><input id="cfg-gas" type="text" placeholder="https://script.google.com/macros/s/.../exec"/></div>
+    <div class="row2">
+      <div class="fg"><label>Cloudinary — cloud name (fotos)</label><input id="cfg-cloud" type="text" placeholder="mi-cloud-name"/></div>
+      <div class="fg"><label>Cloudinary — upload preset</label><input id="cfg-preset" type="text" placeholder="feria_canton_unsigned"/></div>
+    </div>
+
+    <button class="btn btn-prim" onclick="guardarAjustes()">Guardar y sincronizar ahora</button>
+    <br>
+    <button class="btn btn-sec" style="margin-top:8px" onclick="cerrarAjustes()">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL AÑADIR A CHECKLIST -->
+<div class="modal-ov" id="modal-add-chk">
+  <div class="modal-box">
+    <h2>Añadir empresa al checklist</h2>
+    <div class="sub">Para algo que encontraste y no estaba en tu lista precargada.</div>
+    <div class="fg"><label>Nombre de la empresa</label><input id="ac-nombre" type="text"/></div>
+    <div class="fg"><label>Categoría (texto libre)</label><input id="ac-cat" type="text" placeholder="Ej: Bolsas térmicas"/></div>
+    <div class="row2">
+      <div class="fg"><label>Fase</label><select id="ac-fase"><option value="1">Fase 1</option><option value="2">Fase 2</option></select></div>
+      <div class="fg"><label>Hall / Stand</label><input id="ac-hall" type="text" placeholder="Ej: 12.1 B03"/></div>
+    </div>
+    <button class="btn btn-prim" onclick="guardarAddChecklist()">Añadir</button>
+    <br>
+    <button class="btn btn-sec" style="margin-top:8px" onclick="cerrarAddChecklist()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   IndexedDB — wrapper mínimo (sin librerías, offline-safe)
+   ════════════════════════════════════════════════════════════════════════ */
+const DB_NAME='feriaCantonDB', DB_VER=1;
+let dbp=null;
+function openDB(){
+  if(dbp) return dbp;
+  dbp=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains('proveedores')) db.createObjectStore('proveedores',{keyPath:'id'});
+      if(!db.objectStoreNames.contains('checklist')) db.createObjectStore('checklist',{keyPath:'id'});
+      if(!db.objectStoreNames.contains('config')) db.createObjectStore('config',{keyPath:'key'});
+    };
+    req.onsuccess=e=>resolve(e.target.result);
+    req.onerror=e=>reject(e.target.error);
+  });
+  return dbp;
+}
+async function idbGetAll(store){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readonly').objectStore(store).getAll();
+    tx.onsuccess=()=>res(tx.result||[]);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+async function idbPut(store,val){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite').objectStore(store).put(val);
+    tx.onsuccess=()=>res(true);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+async function idbDelete(store,id){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite').objectStore(store).delete(id);
+    tx.onsuccess=()=>res(true);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+async function idbGet(store,id){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readonly').objectStore(store).get(id);
+    tx.onsuccess=()=>res(tx.result||null);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+
+// Pide almacenamiento persistente (mejor esfuerzo — evita que iOS libere datos bajo presión de espacio)
+if(navigator.storage && navigator.storage.persist){
+  navigator.storage.persist().catch(()=>{});
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Datos reales investigados (misma fuente que Productos/v2/empresas_feria_canton.html)
+   ════════════════════════════════════════════════════════════════════════ */
+const CATEGORIAS = [
+  {id:'loncheras',emoji:'🍱',nombre:'Loncheras y Termos',fase:2,zona:'Halls 1.1–2.2',pri:true,
+   empresas:[
+     {nombre:'HAERS (哈尔斯 · Zhejiang)',producto:'Termos acero inox 500ml/1L · Sets lonchera 3 compartimentos.',stand:'2.2 D42–53',conf:'proyectado'},
+     {nombre:'Supor / SEB Group',producto:'Loncheras apilables 2-3 niveles · Termos mug.',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangzhou Imeyon Housewares',producto:'Termos OEM con logo · Bidones 1.5–2L. MOQ ~100.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'movil',emoji:'📱',nombre:'Accesorios para Móvil',fase:1,zona:'Halls 1.1–2.2',pri:true,
+   empresas:[
+     {nombre:'Baseus',producto:'Cargadores GaN 20W/65W · Cables USB-C · Auriculares.',stand:'No confirmado',conf:'no'},
+     {nombre:'HOCO Technology',producto:'Fundas Samsung/iPhone · Cables MFi.',stand:'No confirmado',conf:'no'},
+     {nombre:'Ugreen Group',producto:'Hubs USB-C · Adaptadores premium.',stand:'No confirmado',conf:'no'},
+     {nombre:'Romoss Technology',producto:'Power banks 10-20k mAh.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'ventiladores',emoji:'🌀',nombre:'Ventiladores y Cooling',fase:1,zona:'Halls 3.1–4.2',pri:true,
+   empresas:[
+     {nombre:'Midea Group',producto:'Torre DC con remote · Enfriador evaporativo 220V.',stand:'No confirmado',conf:'no'},
+     {nombre:'AIRMATE',producto:'Techo con kit instalación · Escritorio motor-DC.',stand:'No confirmado',conf:'no'},
+     {nombre:'Gree Electric Appliances',producto:'Columna y techo, serie "tropical".',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'agua',emoji:'💧',nombre:'Purificadores y Filtros de Agua',fase:2,zona:'Halls 6.1–7.2',pri:true,
+   empresas:[
+     {nombre:'Angel Water / ANGEL Group',producto:'Countertop 4 etapas · Jarras · UV portátil.',stand:'No confirmado',conf:'no'},
+     {nombre:'Frizzlife',producto:'Filtros de grifo · Under-sink sin tanque. MOQ 100.',stand:'No confirmado',conf:'no'},
+     {nombre:'Royalstar Appliances',producto:'Dispensadores hot/cold botellón 220V.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'cctv',emoji:'📷',nombre:'Cámaras CCTV/IP',fase:1,zona:'Halls 1.1–2.2',pri:true,
+   empresas:[
+     {nombre:'Hikvision',producto:'Kits DVR 4/8 canales + cámaras 2MP.',stand:'No confirmado',conf:'no'},
+     {nombre:'Dahua Technology',producto:'Kits NVR IP 4K, ~20% más barato.',stand:'No confirmado',conf:'no'},
+     {nombre:'Reolink',producto:'WiFi 4K standalone, batería solar.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'bebe',emoji:'👶',nombre:'Artículos para Bebé y Niño',fase:2,zona:'Halls 7.1–8.2',pri:true,
+   empresas:[
+     {nombre:'Nuby',producto:'Mordedores silicona · Biberones anticólico. FDA/EN71.',stand:'No confirmado',conf:'no'},
+     {nombre:'B-Duck Baby Products',producto:'Bañeras plegables · Sets de aseo.',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangdong Baby Kingdom',producto:'Sets recién nacido · Monitores básicos. MOQ 50.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'deco',emoji:'🎁',nombre:'Decoración y Regalos',fase:2,zona:'Halls 13.1–14.2',
+   empresas:[
+     {nombre:'DH Crafts & Décor',producto:'Resina y madera. MOQ ~50.',stand:'No confirmado',conf:'no'},
+     {nombre:'Yiwu Trade Pavilion',producto:'Representa cientos de fábricas de Yiwu.',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangzhou Artisan Gift',producto:'Regalos corporativos. MOQ 100.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'hogar',emoji:'🏠',nombre:'Hogar y Cocina',fase:2,zona:'Halls 1.1–3.2',
+   empresas:[
+     {nombre:'Supor / SEB Group',producto:'Sartenes titanio · Woks · Sets utensilios.',stand:'No confirmado',conf:'no'},
+     {nombre:'ASD',producto:'Ollas a presión 4-6L · Cacerolas.',stand:'No confirmado',conf:'no'},
+     {nombre:'Joyoung Kitchen',producto:'Tablas antibacterianas · Organizadores.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'iluminacion',emoji:'💡',nombre:'Iluminación LED',fase:1,zona:'Halls 9.1–9.4',
+   empresas:[
+     {nombre:'Opple Lighting',producto:'Paneles LED 60x60 40W · Downlights.',stand:'No confirmado',conf:'no'},
+     {nombre:'NVC Lighting',producto:'Tiras IP65 exterior · Focos PAR.',stand:'No confirmado',conf:'no'},
+     {nombre:'MLS Co. Ltd',producto:'Bombillas E27 a granel. MOQ 500.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'epp',emoji:'🦺',nombre:'Herramientas y EPP',fase:1,zona:'Halls 5.1–7.2',
+   empresas:[
+     {nombre:'Zhejiang Longhua Safety Equipment',producto:'Cascos ABS · Kits EPP. MOQ 200.',stand:'No confirmado',conf:'no'},
+     {nombre:'MSA Safety China',producto:'Cascos V-Gard CE/ANSI.',stand:'No confirmado',conf:'no'},
+     {nombre:'Deltaplus China',producto:'Guantes anticorte · Calzado S3 SRC.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'electro',emoji:'⚡',nombre:'Electrodomésticos Pequeños',fase:1,zona:'Halls 3.1–4.2',
+   empresas:[
+     {nombre:'Bear Electric Appliance',producto:'Freidoras aire 3.5/5.5L · Licuadoras USB.',stand:'No confirmado',conf:'no'},
+     {nombre:'Midea Kitchen Division',producto:'Tostadoras · Cafeteras · Microondas.',stand:'No confirmado',conf:'no'},
+     {nombre:'Joyoung Appliances',producto:'Exprimidores · Batidoras · Arroceras.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'audiovisual',emoji:'📻',nombre:'Equipos Audiovisuales',fase:1,zona:'Halls 1.1–2.2',
+   empresas:[
+     {nombre:'DSPPA Audio',producto:'Amplificadores 100-500W · Mezcladores.',stand:'No confirmado',conf:'no'},
+     {nombre:'Boya Microphones',producto:'Micrófonos wireless, 60% más barato.',stand:'No confirmado',conf:'no'},
+     {nombre:'XTUGA Audio',producto:'Monitor in-ear económico.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'hoteleria',emoji:'🏨',nombre:'Equipos Hotelería',fase:2,zona:'Halls 1.1–3.2 y 9.1–9.2',
+   empresas:[
+     {nombre:'Guangzhou Brilliant Ceramics',producto:'Porcelana con logo hotel. MOQ 200.',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangdong Jiutu Houseware',producto:'Amenities de baño inox.',stand:'No confirmado',conf:'no'},
+     {nombre:'Supor Food Service',producto:'Vajilla inox room service.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'ganaderia',emoji:'🐷',nombre:'Ganadería y Agro',fase:1,zona:'Área exterior',
+   empresas:[
+     {nombre:'Xinhua Poultry Equipment',producto:'Bebederos nipple · Comederos tolva 10-20kg.',stand:'No confirmado',conf:'no'},
+     {nombre:'Henan Muwei Livestock',producto:'Comederos automáticos cerdo · Calefactores.',stand:'No confirmado',conf:'no'},
+     {nombre:'Shandong Qinchuan Agro',producto:'Bebederos copa acero galvanizado.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'granizados',emoji:'🍧',nombre:'Máquinas de Granizados y Helados',fase:1,nuevo:true,pri:true,zona:'Halls 3.1–4.2 y zona catering',
+   empresas:[
+     {nombre:'Oceanpower Food Equipment Tech',producto:'Helado soft-serve/hard comercial · Granizadoras.',stand:'18.2 D46–D47',conf:'proyectado'},
+     {nombre:'ESCOLO',producto:'Vitrinas refrigeración · Freezers helado/catering.',stand:'Área D, 20.1/M28',conf:'proyectado'},
+     {nombre:'Guangzhou Hongling Kitchen Equipment',producto:'Granizado 1-3 tanques, 12L/tanque.',stand:'No confirmado',conf:'no'},
+     {nombre:'Guangzhou Sawish Kitchen Equipment',producto:'Slush machines comerciales.',stand:'No confirmado',conf:'no'},
+   ]},
+  // Categorías libres heredadas de la v1 de esta app — no tienen empresas precargadas
+  {id:'motopartes',emoji:'🏍️',nombre:'Motopartes (🚫 descartado — mercado saturado)',fase:1,zona:'Halls 10.1–10.2',empresas:[]},
+  {id:'otros',emoji:'❓',nombre:'Otros / algo nuevo que encontraste',fase:0,zona:null,empresas:[]},
+];
+const ARANCEL_POR_CAT={loncheras:6,movil:0,ventiladores:6,agua:6,cctv:0,bebe:11,deco:11,hogar:6,iluminacion:6,epp:6,electro:6,audiovisual:0,hoteleria:11,ganaderia:6,granizados:6,motopartes:6,otros:6};
+const CONF_ICON={alta:'✅',media:'🟡',proyectado:'🔮',no:'⚠️'};
+
+/* ════════════════════════════════════════════════════════════════════════
+   Estado en memoria
+   ════════════════════════════════════════════════════════════════════════ */
+let PROVEEDORES=[], CHECKLIST=[], cfg={tc:3.75,margen:30,meses:3,cont:5,gasUrl:'',cloudName:'',cloudPreset:''};
+let curRating=0;
+let fotos={producto:null,tarjeta:null,contacto:null}; // {blob, url} temporales del form
+let tiers=[]; // tramos de precio del registro en edición: {cantidadMin,precio,moneda}
+let qas=[]; // preguntas/respuestas del registro en edición
+let calcTiers=[];
+
+const COSTES={flete_cbm:55,flete_min:280,seguro_pct:0.004,agente:350,thc:150,almacen_puerto:60,flete_terrestre:180,flete_terrestre_min:350,almacen_taraq_sol:350};
+const CNY_USD=7.1; // referencial, documentado — mismo supuesto que v1
+
+function uid(){ return 'r'+Date.now()+'_'+Math.random().toString(36).slice(2,8); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   Carga inicial
+   ════════════════════════════════════════════════════════════════════════ */
+async function init(){
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').catch(()=>{}); }
+
+  const cfgRow=await idbGet('config','main');
+  if(cfgRow) cfg={...cfg, ...cfgRow.val};
+
+  CHECKLIST=await idbGetAll('checklist');
+  if(!CHECKLIST.length) await seedChecklist();
+  PROVEEDORES=await idbGetAll('proveedores');
+
+  poblarSelectCategorias();
+  addTierRow();
+  addCalcTierRow();
+  renderChecklist();
+  renderLista();
+
+  window.addEventListener('online', ()=>syncAll().catch(()=>{}));
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible' && navigator.onLine) syncAll().catch(()=>{}); });
+  if(navigator.onLine) syncAll().catch(()=>{});
+}
+
+async function seedChecklist(){
+  let i=0;
+  for(const cat of CATEGORIAS){
+    for(const e of cat.empresas){
+      const item={
+        id:'seed_'+(i++), catId:cat.id, catNombre:cat.nombre, catEmoji:cat.emoji,
+        fase:cat.fase, zona:cat.zona, empresa:e.nombre, producto:e.producto,
+        stand:e.stand, conf:e.conf, visitado:false, custom:false
+      };
+      await idbPut('checklist', item);
+      CHECKLIST.push(item);
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Tabs
+   ════════════════════════════════════════════════════════════════════════ */
+function setTab(v){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('act', t.dataset.v===v));
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('act'));
+  document.getElementById('v-'+v).classList.add('act');
+  if(v==='list') renderLista();
+  if(v==='cmp') renderComparador();
+  if(v==='calc') poblarCalcPick();
+  if(v==='check') renderChecklist();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CHECKLIST
+   ════════════════════════════════════════════════════════════════════════ */
+let chkFaseFilter='all';
+function setChkFase(f,btn){
+  chkFaseFilter=f;
+  document.querySelectorAll('.chip-f').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderChecklist();
+}
+function renderChecklist(){
+  const soloPend=document.getElementById('chk-solo-pend').checked;
+  let list=CHECKLIST.filter(c=>{
+    if(chkFaseFilter!=='all' && String(c.fase)!==chkFaseFilter) return false;
+    if(soloPend && c.visitado) return false;
+    return true;
+  });
+  list.sort((a,b)=> (a.visitado===b.visitado?0:(a.visitado?1:-1)) || a.catNombre.localeCompare(b.catNombre));
+  const cont=document.getElementById('chk-lista');
+  if(!list.length){ cont.innerHTML='<div class="empty">Nada que mostrar con este filtro.</div>'; return; }
+  cont.innerHTML=list.map(c=>`
+    <div class="chk-item ${c.visitado?'done':''}">
+      <div class="chk-top">
+        <input type="checkbox" ${c.visitado?'checked':''} onchange="toggleVisitado('${c.id}', this.checked)">
+        <div style="flex:1;min-width:0" onclick="toggleDetalle('${c.id}')">
+          <div class="chk-nombre ${c.visitado?'done':''}">${c.catEmoji} ${c.empresa}</div>
+          <div class="chk-meta">${c.catNombre} · Fase ${c.fase||'?'} ${c.custom?'<span class="chk-badge" style="background:#EDE9FE;color:#6D28D9">Añadida por ti</span>':''} ${c.conf?`<span class="chk-badge" style="background:#F1F5F9;color:#475569">${CONF_ICON[c.conf]||''} ${c.stand&&c.stand!=='No confirmado'?c.stand:c.zona||''}</span>`:''}</div>
+          <div class="chk-detail" id="det-${c.id}">${c.producto||''}</div>
+        </div>
+      </div>
+      <div class="chk-actions">
+        <button class="mini" onclick="irARegistrar('${c.id}')">✍️ Registrar visita</button>
+      </div>
+    </div>`).join('');
+}
+function toggleDetalle(id){
+  const el=document.getElementById('det-'+id);
+  if(el) el.classList.toggle('v');
+}
+async function toggleVisitado(id, val){
+  const c=CHECKLIST.find(x=>x.id===id);
+  if(!c) return;
+  c.visitado=val;
+  await idbPut('checklist', c);
+  renderChecklist();
+}
+function irARegistrar(id){
+  const c=CHECKLIST.find(x=>x.id===id);
+  if(!c) return;
+  setTab('add');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('act', t.dataset.v==='add'));
+  document.getElementById('f-nombre').value=c.empresa;
+  const sel=document.getElementById('f-cat');
+  if([...sel.options].some(o=>o.value===c.catId)){ sel.value=c.catId; onCatChange(); }
+  document.getElementById('f-stand').value = (c.stand && c.stand!=='No confirmado') ? c.stand : (c.zona||'');
+}
+function abrirAddChecklist(){ document.getElementById('modal-add-chk').classList.add('v'); }
+function cerrarAddChecklist(){ document.getElementById('modal-add-chk').classList.remove('v'); }
+async function guardarAddChecklist(){
+  const nombre=document.getElementById('ac-nombre').value.trim();
+  if(!nombre){ alert('Ponle un nombre.'); return; }
+  const item={
+    id:uid(), catId:'custom', catNombre:document.getElementById('ac-cat').value.trim()||'Sin categoría',
+    catEmoji:'🆕', fase:document.getElementById('ac-fase').value, zona:'',
+    empresa:nombre, producto:'', stand:document.getElementById('ac-hall').value.trim()||'No confirmado',
+    conf:'no', visitado:false, custom:true
+  };
+  await idbPut('checklist', item);
+  CHECKLIST.push(item);
+  ['ac-nombre','ac-cat','ac-hall'].forEach(id=>document.getElementById(id).value='');
+  cerrarAddChecklist();
+  renderChecklist();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   AJUSTES
+   ════════════════════════════════════════════════════════════════════════ */
+function abrirAjustes(){
+  document.getElementById('cfg-tc').value=cfg.tc;
+  document.getElementById('cfg-margen').value=cfg.margen;
+  document.getElementById('cfg-meses').value=cfg.meses;
+  document.getElementById('cfg-cont').value=cfg.cont;
+  document.getElementById('cfg-gas').value=cfg.gasUrl||'';
+  document.getElementById('cfg-cloud').value=cfg.cloudName||'';
+  document.getElementById('cfg-preset').value=cfg.cloudPreset||'';
+  renderSyncStatus();
+  document.getElementById('modal-ajustes').classList.add('v');
+}
+function cerrarAjustes(){ document.getElementById('modal-ajustes').classList.remove('v'); }
+function renderSyncStatus(){
+  const pend=PROVEEDORES.filter(p=>!p.synced).length;
+  const el=document.getElementById('sync-status');
+  if(!cfg.gasUrl){
+    el.innerHTML=`<div class="status-line warn">☁️ Sincronización no configurada — tus ${PROVEEDORES.length} registros están seguros solo en este teléfono. Usa "Exportar todo" como respaldo manual mientras tanto.</div>`;
+  } else if(pend>0){
+    el.innerHTML=`<div class="status-line warn">🔄 ${pend} registro(s) sin sincronizar todavía. Se reintenta solo cuando hay internet.</div>`;
+  } else {
+    el.innerHTML=`<div class="status-line ok">✅ Todo sincronizado (${PROVEEDORES.length} registros).</div>`;
+  }
+}
+async function guardarAjustes(){
+  cfg={
+    tc:parseFloat(document.getElementById('cfg-tc').value)||3.75,
+    margen:parseFloat(document.getElementById('cfg-margen').value)||30,
+    meses:parseFloat(document.getElementById('cfg-meses').value)||3,
+    cont:parseFloat(document.getElementById('cfg-cont').value)||5,
+    gasUrl:document.getElementById('cfg-gas').value.trim(),
+    cloudName:document.getElementById('cfg-cloud').value.trim(),
+    cloudPreset:document.getElementById('cfg-preset').value.trim(),
+  };
+  await idbPut('config',{key:'main', val:cfg});
+  renderLista();
+  if(navigator.onLine) await syncAll().catch(()=>{});
+  renderSyncStatus();
+}
+document.getElementById('modal-ajustes').addEventListener('click', e=>{ if(e.target.id==='modal-ajustes') cerrarAjustes(); });
+document.getElementById('modal-add-chk').addEventListener('click', e=>{ if(e.target.id==='modal-add-chk') cerrarAddChecklist(); });
+
+/* ════════════════════════════════════════════════════════════════════════
+   Categorías (select + panel info) en Registrar
+   ════════════════════════════════════════════════════════════════════════ */
+function poblarSelectCategorias(){
+  const sel=document.getElementById('f-cat');
+  sel.innerHTML=CATEGORIAS.map(c=>`<option value="${c.id}">${c.emoji} ${c.nombre}</option>`).join('');
+  onCatChange();
+}
+function onCatChange(){
+  const catId=document.getElementById('f-cat').value;
+  const cat=CATEGORIAS.find(c=>c.id===catId);
+  document.getElementById('f-cat-otro-wrap').style.display=(catId==='otros')?'block':'none';
+  document.getElementById('f-arancel').value=String(ARANCEL_POR_CAT[catId]??6);
+  const info=document.getElementById('cat-info');
+  if(!cat || catId==='otros' || !cat.empresas.length){ info.style.display='none'; return; }
+  info.style.display='block';
+  let h=`<span class="fase-badge">Fase ${cat.fase}${cat.zona?' · '+cat.zona:''}</span><br>`;
+  h+=cat.empresas.map(e=>`<div class="empresa">🏭 ${e.nombre} — ${e.producto} <span class="conf">${CONF_ICON[e.conf]||''}</span></div>`).join('');
+  info.innerHTML=h;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Fotos (comprimidas → Blob, guardadas en IndexedDB)
+   ════════════════════════════════════════════════════════════════════════ */
+function comprimirFoto(file, maxDim, quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>h){ if(w>maxDim){ h=Math.round(h*maxDim/w); w=maxDim; } }
+        else { if(h>maxDim){ w=Math.round(w*maxDim/h); h=maxDim; } }
+        const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        canvas.toBlob(blob=>resolve(blob), 'image/jpeg', quality);
+      };
+      img.onerror=reject;
+      img.src=e.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+async function onFoto(ev, slot){
+  const file=ev.target.files[0];
+  if(!file) return;
+  const maxDim = slot==='tarjeta' ? 900 : 640;
+  const quality = slot==='tarjeta' ? 0.75 : 0.62;
+  const blob=await comprimirFoto(file, maxDim, quality);
+  fotos[slot]={blob, url:URL.createObjectURL(blob), orig:file, guardado:false};
+  const box=document.getElementById('box-'+slot);
+  box.innerHTML=`<img src="${fotos[slot].url}"><button type="button" class="foto-save-btn" onclick="guardarFotoFormEnCarrete('${slot}',event)">💾 Fotos</button>`;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Guardar foto en el Carrete del teléfono (Web Share API → app Fotos)
+   Es una copia EXTRA de seguridad: la foto comprimida ya queda en IndexedDB
+   de todas formas. Esto es para que, aunque se pierda el navegador/la app,
+   la foto original siga existiendo en el Carrete normal del iPhone.
+   ════════════════════════════════════════════════════════════════════════ */
+async function compartirFotoComoArchivo(file, btn){
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({files:[file]});
+      if(btn){ btn.textContent='✅ Guardada'; btn.classList.add('ok'); }
+      return true;
+    }catch(e){ return false; } // usuario canceló el share — no se marca como guardada
+  }
+  // Fallback si el navegador no soporta compartir archivos: abre la foto en pestaña
+  // nueva para que Diego la guarde con "Mantener presionada → Guardar en Fotos".
+  window.open(URL.createObjectURL(file), '_blank');
+  if(btn){ btn.textContent='↗️ Abierta'; }
+  return false;
+}
+async function guardarFotoFormEnCarrete(slot, ev){
+  if(ev) ev.stopPropagation();
+  const f=fotos[slot];
+  if(!f || !f.orig) return;
+  const btn=ev ? ev.target.closest('.foto-save-btn') : null;
+  const ok=await compartirFotoComoArchivo(f.orig, btn);
+  if(ok) f.guardado=true;
+}
+async function guardarFotoRegistroEnCarrete(pid, slot, ev){
+  if(ev) ev.stopPropagation();
+  const p=PROVEEDORES.find(x=>x.id===pid);
+  if(!p || !p.fotos || !p.fotos[slot]) return;
+  const nombreArchivo=`feria_${slot}_${p.nombre.replace(/[^a-z0-9]+/gi,'_').slice(0,30)}_${p.id}.jpg`;
+  const file=new File([p.fotos[slot]], nombreArchivo, {type:'image/jpeg'});
+  const btn=ev ? ev.target.closest('.foto-save-btn') : null;
+  const ok=await compartirFotoComoArchivo(file, btn);
+  if(ok){
+    p.carrete=p.carrete||{};
+    p.carrete[slot]=true;
+    await idbPut('proveedores', p);
+    renderLista();
+  }
+}
+function fotosSinCarrete(){
+  let n=0;
+  for(const p of PROVEEDORES){
+    for(const slot of ['producto','tarjeta','contacto']){
+      if(p.fotos && p.fotos[slot] && !(p.carrete && p.carrete[slot])) n++;
+    }
+  }
+  return n;
+}
+async function guardarSiguientePendiente(){
+  for(const p of PROVEEDORES){
+    for(const slot of ['producto','tarjeta','contacto']){
+      if(p.fotos && p.fotos[slot] && !(p.carrete && p.carrete[slot])){
+        const nombreArchivo=`feria_${slot}_${p.nombre.replace(/[^a-z0-9]+/gi,'_').slice(0,30)}_${p.id}.jpg`;
+        const file=new File([p.fotos[slot]], nombreArchivo, {type:'image/jpeg'});
+        const ok=await compartirFotoComoArchivo(file, null);
+        if(ok){
+          p.carrete=p.carrete||{};
+          p.carrete[slot]=true;
+          await idbPut('proveedores', p);
+        }
+        renderLista();
+        return;
+      }
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Tramos de precio (tiers) — formulario Registrar
+   ════════════════════════════════════════════════════════════════════════ */
+function addTierRow(){
+  tiers.push({cantidadMin:'', precio:'', moneda:'USD'});
+  renderTiers();
+}
+function rmTierRow(i){ tiers.splice(i,1); renderTiers(); }
+function renderTiers(){
+  document.getElementById('tiers-wrap').innerHTML=tiers.map((t,i)=>`
+    <div class="tier-row">
+      <input type="number" placeholder="Cant. mínima" value="${t.cantidadMin}" oninput="tiers[${i}].cantidadMin=this.value">
+      <input type="number" step="0.01" placeholder="Precio/ud" value="${t.precio}" oninput="tiers[${i}].precio=this.value">
+      <select onchange="tiers[${i}].moneda=this.value">
+        <option ${t.moneda==='USD'?'selected':''}>USD</option>
+        <option ${t.moneda==='CNY'?'selected':''}>CNY</option>
+        <option ${t.moneda==='PEN'?'selected':''}>PEN</option>
+      </select>
+      <button class="tier-rm" onclick="rmTierRow(${i})">×</button>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Preguntas y respuestas
+   ════════════════════════════════════════════════════════════════════════ */
+function addQaRow(pregunta){
+  qas.push({pregunta:pregunta||'', respuesta:''});
+  renderQas();
+}
+function addQaChip(pregunta){ addQaRow(pregunta); }
+function rmQaRow(i){ qas.splice(i,1); renderQas(); }
+function renderQas(){
+  document.getElementById('qa-wrap').innerHTML=qas.map((q,i)=>`
+    <div class="qa-row">
+      <div class="qh">
+        <input type="text" placeholder="Pregunta" value="${q.pregunta}" oninput="qas[${i}].pregunta=this.value">
+        <button class="tier-rm" onclick="rmQaRow(${i})">×</button>
+      </div>
+      <textarea placeholder="Respuesta del proveedor" oninput="qas[${i}].respuesta=this.value">${q.respuesta}</textarea>
+    </div>`).join('');
+}
+
+document.querySelectorAll('#f-stars .star').forEach(s=>{
+  s.addEventListener('click', ()=>{
+    curRating=parseInt(s.dataset.n);
+    document.querySelectorAll('#f-stars .star').forEach(x=>x.classList.toggle('on', parseInt(x.dataset.n)<=curRating));
+  });
+});
+
+/* ════════════════════════════════════════════════════════════════════════
+   Cálculo de rentabilidad — misma fórmula exacta que calculadora_importacion.html
+   ════════════════════════════════════════════════════════════════════════ */
+function precioAUsd(precio, moneda){
+  if(!precio) return 0;
+  if(moneda==='CNY') return precio/CNY_USD;
+  if(moneda==='PEN') return precio/cfg.tc;
+  return precio;
+}
+function calcularFinanzas(precioUsd, peso, vol, cantidad, arancelPct){
+  if(!precioUsd || !peso || !vol || !cantidad) return null;
+  const fobTotal=precioUsd*cantidad;
+  const volTotal=vol*cantidad;
+  const pesoTotal=peso*cantidad;
+  const fleteMaritimo=Math.max(COSTES.flete_cbm*volTotal, COSTES.flete_min);
+  const cif=fobTotal+fleteMaritimo;
+  const seguro=cif*COSTES.seguro_pct;
+  const arancelUsd=cif*(arancelPct/100);
+  const baseIgv=cif+arancelUsd;
+  const igv=baseIgv*0.18, ipm=baseIgv*0.02;
+  const gastosPortuarios=COSTES.agente+COSTES.thc+COSTES.almacen_puerto;
+  const pesoTon=pesoTotal/1000;
+  const fleteTerrestre=Math.max(COSTES.flete_terrestre*pesoTon, COSTES.flete_terrestre_min);
+  const almacenTaraqUsd=(COSTES.almacen_taraq_sol/cfg.tc)*cfg.meses;
+  const subtotal=fobTotal+fleteMaritimo+seguro+arancelUsd+igv+ipm+gastosPortuarios+fleteTerrestre+almacenTaraqUsd;
+  const contingencias=subtotal*(cfg.cont/100);
+  const totalUsd=subtotal+contingencias;
+  const equilibrioUnitSol=(totalUsd/cantidad)*cfg.tc;
+  const ventaUnitSol=equilibrioUnitSol/(1-cfg.margen/100);
+  const gananciaTotal=(ventaUnitSol-equilibrioUnitSol)*cantidad;
+  return {equilibrioUnitSol, ventaUnitSol, gananciaTotal};
+}
+// Elige el tramo de precio aplicable a una cantidad dada: el de mayor cantidadMin que no la supere
+function tierAplicable(p, cantidad){
+  const validos=(p.tiers||[]).filter(t=>t.cantidadMin!=='' && t.precio!=='').map(t=>({...t,cantidadMin:parseFloat(t.cantidadMin),precio:parseFloat(t.precio)}));
+  if(!validos.length) return null;
+  const aplicables=validos.filter(t=>cantidad>=t.cantidadMin).sort((a,b)=>b.cantidadMin-a.cantidadMin);
+  return aplicables[0] || validos.sort((a,b)=>a.cantidadMin-b.cantidadMin)[0];
+}
+function finanzasDeRegistro(p){
+  const cantidad=p.cantidad;
+  const tier=tierAplicable(p, cantidad);
+  if(!tier || !cantidad) return null;
+  const precioUsd=precioAUsd(tier.precio, tier.moneda);
+  return calcularFinanzas(precioUsd, p.peso, p.vol, cantidad, p.arancel);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Guardar registro (Registrar tab)
+   ════════════════════════════════════════════════════════════════════════ */
+async function guardarProducto(){
+  const nombre=document.getElementById('f-nombre').value.trim();
+  if(!nombre){ alert('Ponle un nombre.'); return; }
+  const catId=document.getElementById('f-cat').value;
+  const cat=CATEGORIAS.find(c=>c.id===catId);
+  const categoria=(catId==='otros') ? (document.getElementById('f-cat-otro').value.trim()||'Otros') : (cat?cat.emoji+' '+cat.nombre:catId);
+
+  const tiersLimpios=tiers.filter(t=>t.cantidadMin!=='' && t.precio!=='');
+
+  const p={
+    id:uid(),
+    nombre, categoria,
+    tiers:tiersLimpios,
+    peso:parseFloat(document.getElementById('f-peso').value)||0,
+    vol:parseFloat(document.getElementById('f-vol').value)||0,
+    cantidad:parseInt(document.getElementById('f-cantidad').value)||0,
+    arancel:parseFloat(document.getElementById('f-arancel').value)||6,
+    moq:document.getElementById('f-moq').value.trim(),
+    stand:document.getElementById('f-stand').value.trim(),
+    proveedor:document.getElementById('f-proveedor').value.trim(),
+    preguntas:qas.filter(q=>q.pregunta||q.respuesta),
+    nota:document.getElementById('f-nota').value.trim(),
+    rating:curRating,
+    fecha:new Date().toISOString(),
+    comparar:false,
+    fotos:{
+      producto: fotos.producto ? fotos.producto.blob : null,
+      tarjeta: fotos.tarjeta ? fotos.tarjeta.blob : null,
+      contacto: fotos.contacto ? fotos.contacto.blob : null,
+    },
+    fotoUrls:{producto:'',tarjeta:'',contacto:''}, // se llenan al sincronizar con Cloudinary
+    synced:false,
+    carrete:{
+      producto: fotos.producto ? !!fotos.producto.guardado : false,
+      tarjeta: fotos.tarjeta ? !!fotos.tarjeta.guardado : false,
+      contacto: fotos.contacto ? !!fotos.contacto.guardado : false,
+    },
+  };
+  await idbPut('proveedores', p);
+  PROVEEDORES.unshift(p);
+
+  // reset form
+  ['f-nombre','f-moq','f-stand','f-proveedor','f-nota','f-cat-otro','f-peso','f-vol','f-cantidad']
+    .forEach(id=>document.getElementById(id).value='');
+  fotos={producto:null,tarjeta:null,contacto:null};
+  ['producto','tarjeta','contacto'].forEach(s=>{
+    document.getElementById('box-'+s).innerHTML = {producto:'📦',tarjeta:'🪪',contacto:'🙂'}[s] + `<input type="file" accept="image/*" capture="environment" onchange="onFoto(event,'${s}')">`;
+  });
+  tiers=[]; addTierRow();
+  qas=[]; renderQas();
+  curRating=0;
+  document.querySelectorAll('#f-stars .star').forEach(x=>x.classList.remove('on'));
+  document.getElementById('f-cat').selectedIndex=0;
+  onCatChange();
+
+  if(navigator.onLine) syncAll().catch(()=>{});
+  setTab('list');
+}
+
+async function eliminarProducto(id){
+  if(!confirm('¿Eliminar este registro?')) return;
+  PROVEEDORES=PROVEEDORES.filter(p=>p.id!==id);
+  await idbDelete('proveedores', id);
+  renderLista();
+}
+async function toggleComparar(id, checked){
+  const p=PROVEEDORES.find(x=>x.id===id);
+  if(p){ p.comparar=checked; await idbPut('proveedores', p); }
+}
+
+function fmtTier(t){ const s={USD:'$',CNY:'¥',PEN:'S/'}[t.moneda]||''; return `${s}${parseFloat(t.precio).toFixed(2)} (${t.cantidadMin}+)`; }
+function fmtPrecioResumen(p){
+  if(!p.tiers || !p.tiers.length) return '—';
+  const ordenados=[...p.tiers].sort((a,b)=>parseFloat(a.cantidadMin)-parseFloat(b.cantidadMin));
+  if(ordenados.length===1) return fmtTier(ordenados[0]);
+  return `${fmtTier(ordenados[0])} → ${fmtTier(ordenados[ordenados.length-1])}`;
+}
+function fmtSol(n){ return 'S/ '+Math.round(n).toLocaleString('es-PE'); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   LISTA
+   ════════════════════════════════════════════════════════════════════════ */
+function renderBannerCarrete(){
+  const wrap=document.getElementById('carrete-banner-wrap');
+  const n=fotosSinCarrete();
+  if(!n){ wrap.innerHTML=''; return; }
+  wrap.innerHTML=`<div class="carrete-banner"><span>📷 ${n} foto(s) sin respaldo en tu Carrete todavía.</span><button onclick="guardarSiguientePendiente()">Guardar siguiente</button></div>`;
+}
+function renderLista(){
+  renderBannerCarrete();
+  const cats=[...new Set(PROVEEDORES.map(p=>p.categoria))];
+  const selCat=document.getElementById('ord-cat');
+  const curCat=selCat.value;
+  selCat.innerHTML='<option value="">Todas las categorías</option>'+cats.map(c=>`<option value="${c}" ${c===curCat?'selected':''}>${c}</option>`).join('');
+
+  let vis=PROVEEDORES.map(p=>({...p,_fin:finanzasDeRegistro(p)}));
+  const filtroCat=selCat.value;
+  if(filtroCat) vis=vis.filter(p=>p.categoria===filtroCat);
+
+  const ordBy=document.getElementById('ord-by').value;
+  if(ordBy==='precio') vis.sort((a,b)=>(a._fin?a._fin.equilibrioUnitSol:9e9)-(b._fin?b._fin.equilibrioUnitSol:9e9));
+  else if(ordBy==='rating') vis.sort((a,b)=>b.rating-a.rating);
+  else if(ordBy==='ganancia') vis.sort((a,b)=>(b._fin?b._fin.gananciaTotal:-1)-(a._fin?a._fin.gananciaTotal:-1));
+  else vis.sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+
+  const cont=document.getElementById('lista');
+  if(!vis.length){ cont.innerHTML='<div class="empty">Todavía no registraste nada.</div>'; return; }
+
+  cont.innerHTML=vis.map(p=>{
+    const fotosHtml=['producto','tarjeta','contacto'].map(s=>{
+      if(!p.fotos || !p.fotos[s]) return '';
+      const url = p.fotoUrls && p.fotoUrls[s] ? p.fotoUrls[s] : URL.createObjectURL(p.fotos[s]);
+      const yaGuardada = p.carrete && p.carrete[s];
+      return `<span class="foto-thumb"><img src="${url}"><button type="button" class="foto-save-btn ${yaGuardada?'ok':''}" onclick="guardarFotoRegistroEnCarrete('${p.id}','${s}',event)">${yaGuardada?'✅':'💾'}</button></span>`;
+    }).join('');
+    return `
+    <div class="prod">
+      ${fotosHtml ? `<div class="prod-fotos">${fotosHtml}</div>` : ''}
+      <div class="prod-top">
+        <div>
+          <div class="prod-cat">${p.categoria} <span class="sync-pill ${p.synced?'si':'no'}">${p.synced?'☁️ sync':'📴 local'}</span></div>
+          <div class="prod-nombre">${p.nombre}</div>
+        </div>
+        <div class="prod-precio">${fmtPrecioResumen(p)}</div>
+      </div>
+      <div class="prod-meta">
+        ${p.moq ? 'MOQ: '+p.moq+' · ' : ''}${p.stand||''}
+        ${p.proveedor ? '<br>'+p.proveedor : ''}
+        ${p.preguntas && p.preguntas.length ? '<br>💬 '+p.preguntas.length+' pregunta(s) registradas' : ''}
+        ${p.nota ? '<br>"'+p.nota+'"' : ''}
+      </div>
+      <div class="prod-stars">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+      ${p._fin ? `
+      <div class="prod-fin">
+        <span>Equilibrio ${fmtSol(p._fin.equilibrioUnitSol)}/ud</span>
+        <span class="ok">Venta sug. ${fmtSol(p._fin.ventaUnitSol)}/ud</span>
+        <span class="ok">Ganancia total ${fmtSol(p._fin.gananciaTotal)}</span>
+      </div>` : ''}
+      <div class="prod-actions">
+        <label class="chk"><input type="checkbox" ${p.comparar?'checked':''} onchange="toggleComparar('${p.id}', this.checked)"/> Comparar</label>
+        <button class="mini del" onclick="eliminarProducto('${p.id}')">Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CALCULADORA
+   ════════════════════════════════════════════════════════════════════════ */
+function poblarCalcPick(){
+  const sel=document.getElementById('calc-pick');
+  sel.innerHTML='<option value="">— Cálculo libre —</option>'+PROVEEDORES.map(p=>`<option value="${p.id}">${p.nombre}</option>`).join('');
+}
+function calcCargarDeRegistro(){
+  const id=document.getElementById('calc-pick').value;
+  if(!id) return;
+  const p=PROVEEDORES.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('c-peso').value=p.peso||'';
+  document.getElementById('c-vol').value=p.vol||'';
+  document.getElementById('c-arancel').value=p.arancel||6;
+  calcTiers=(p.tiers||[]).map(t=>({...t}));
+  if(!calcTiers.length) calcTiers=[{cantidadMin:'',precio:'',moneda:'USD'}];
+  renderCalcTiers();
+}
+function addCalcTierRow(){ calcTiers.push({cantidadMin:'',precio:'',moneda:'USD'}); renderCalcTiers(); }
+function rmCalcTierRow(i){ calcTiers.splice(i,1); renderCalcTiers(); }
+function renderCalcTiers(){
+  document.getElementById('calc-tiers-wrap').innerHTML=calcTiers.map((t,i)=>`
+    <div class="tier-row">
+      <input type="number" placeholder="Cant. mínima" value="${t.cantidadMin}" oninput="calcTiers[${i}].cantidadMin=this.value">
+      <input type="number" step="0.01" placeholder="Precio/ud" value="${t.precio}" oninput="calcTiers[${i}].precio=this.value">
+      <select onchange="calcTiers[${i}].moneda=this.value">
+        <option ${t.moneda==='USD'?'selected':''}>USD</option>
+        <option ${t.moneda==='CNY'?'selected':''}>CNY</option>
+        <option ${t.moneda==='PEN'?'selected':''}>PEN</option>
+      </select>
+      <button class="tier-rm" onclick="rmCalcTierRow(${i})">×</button>
+    </div>`).join('');
+}
+function calcularTodo(){
+  const peso=parseFloat(document.getElementById('c-peso').value)||0;
+  const vol=parseFloat(document.getElementById('c-vol').value)||0;
+  const arancel=parseFloat(document.getElementById('c-arancel').value)||0;
+  const validos=calcTiers.filter(t=>t.cantidadMin!=='' && t.precio!=='');
+  if(!peso || !vol || !validos.length){ document.getElementById('calc-resultado').innerHTML='<div class="empty">Completa peso, volumen y al menos un tramo de precio.</div>'; return; }
+
+  const filas=validos.map(t=>{
+    const cantidad=parseFloat(t.cantidadMin);
+    const precioUsd=precioAUsd(parseFloat(t.precio), t.moneda);
+    const fin=calcularFinanzas(precioUsd, peso, vol, cantidad, arancel);
+    return {t, fin};
+  }).filter(f=>f.fin);
+
+  if(!filas.length){ document.getElementById('calc-resultado').innerHTML='<div class="empty">No se pudo calcular — revisa los datos.</div>'; return; }
+
+  const mejor=filas.reduce((a,b)=> b.fin.gananciaTotal>a.fin.gananciaTotal ? b : a);
+
+  let html=`<div class="calc-kpi"><div class="v">${fmtSol(mejor.fin.ventaUnitSol)}</div><div class="l">Mejor precio de venta sugerido/ud (tramo ${mejor.t.cantidadMin}+ uds)</div></div>`;
+  html+=filas.map(f=>`
+    <div class="calc-tier-row ${f===mejor?'best':''}">
+      <div><b>${f.t.cantidadMin}+ uds</b> · ${fmtTier(f.t)}</div>
+      <div style="text-align:right">Equilibrio ${fmtSol(f.fin.equilibrioUnitSol)} · Venta ${fmtSol(f.fin.ventaUnitSol)} · Ganancia ${fmtSol(f.fin.gananciaTotal)}</div>
+    </div>`).join('');
+  document.getElementById('calc-resultado').innerHTML=html;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   COMPARADOR
+   ════════════════════════════════════════════════════════════════════════ */
+function renderComparador(){
+  const sel=PROVEEDORES.filter(p=>p.comparar).map(p=>({...p,_fin:finanzasDeRegistro(p)}));
+  const table=document.getElementById('cmp-table');
+  const empty=document.getElementById('cmp-empty');
+  if(sel.length<2){ table.style.display='none'; empty.style.display='block'; return; }
+  empty.style.display='none'; table.style.display='table';
+
+  const fotoDe=p=>{
+    const url = p.fotoUrls && p.fotoUrls.producto ? p.fotoUrls.producto : (p.fotos && p.fotos.producto ? URL.createObjectURL(p.fotos.producto) : '');
+    return url ? `<img src="${url}">` : '—';
+  };
+  const filas=[
+    ['Foto', p=>fotoDe(p)],
+    ['Producto', p=>p.nombre],
+    ['Categoría', p=>p.categoria],
+    ['Precio', p=>fmtPrecioResumen(p)],
+    ['MOQ', p=>p.moq||'—'],
+    ['Stand', p=>p.stand||'—'],
+    ['Rating', p=>'★'.repeat(p.rating)+'☆'.repeat(5-p.rating)],
+    ['Equilibrio/ud', p=>p._fin?fmtSol(p._fin.equilibrioUnitSol):'—', true],
+    ['Venta sugerida/ud', p=>p._fin?fmtSol(p._fin.ventaUnitSol):'—', true],
+    ['Ganancia total', p=>p._fin?fmtSol(p._fin.gananciaTotal):'—', true],
+    ['Nota', p=>p.nota||'—'],
+  ];
+  table.innerHTML='<tr><th></th>'+sel.map(p=>`<th>${p.nombre}</th>`).join('')+'</tr>'+
+    filas.map(([label,fn,fin])=>`<tr class="${fin?'fin-row':''}"><th>${label}</th>`+sel.map(p=>`<td>${fn(p)}</td>`).join('')+'</tr>').join('');
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   SINCRONIZACIÓN OPORTUNISTA — solo si hay config + internet, si no, no hace nada
+   ════════════════════════════════════════════════════════════════════════ */
+async function subirFotoCloudinary(blob){
+  if(!cfg.cloudName || !cfg.cloudPreset || !blob) return '';
+  const fd=new FormData();
+  fd.append('file', blob);
+  fd.append('upload_preset', cfg.cloudPreset);
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/image/upload`, {method:'POST', body:fd});
+  if(!res.ok) throw new Error('cloudinary '+res.status);
+  const data=await res.json();
+  return data.secure_url || '';
+}
+async function syncAll(){
+  if(!cfg.gasUrl) return; // sin configurar = no hace nada, silencioso
+  const pendientes=PROVEEDORES.filter(p=>!p.synced);
+  for(const p of pendientes){
+    try{
+      // 1) fotos primero (best-effort, no bloquea el resto si falla una)
+      for(const slot of ['producto','tarjeta','contacto']){
+        if(p.fotos && p.fotos[slot] && !p.fotoUrls[slot] && cfg.cloudName){
+          try{ p.fotoUrls[slot]=await subirFotoCloudinary(p.fotos[slot]); }catch(e){ /* se reintenta la próxima vez */ }
+        }
+      }
+      // 2) datos de texto al Apps Script
+      const payload={
+        id:p.id, nombre:p.nombre, categoria:p.categoria, tiers:p.tiers, peso:p.peso, vol:p.vol,
+        cantidad:p.cantidad, arancel:p.arancel, moq:p.moq, stand:p.stand, proveedor:p.proveedor,
+        preguntas:p.preguntas, nota:p.nota, rating:p.rating, fecha:p.fecha,
+        fotoUrls:p.fotoUrls,
+      };
+      const res=await fetch(cfg.gasUrl, {method:'POST', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload)});
+      if(res.ok){ p.synced=true; }
+      await idbPut('proveedores', p);
+    }catch(e){ /* sigue offline, se reintenta luego */ }
+  }
+  renderLista();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   EXPORTAR / COMPARTIR (funciona desde el día 1, sin ninguna cuenta)
+   ════════════════════════════════════════════════════════════════════════ */
+function blobToBase64(blob){
+  return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(blob); });
+}
+async function exportarJSON(){
+  if(!PROVEEDORES.length && !CHECKLIST.length){ alert('No hay datos todavía.'); return; }
+  const data={ exportado:new Date().toISOString(), checklist:CHECKLIST, proveedores:[] };
+  for(const p of PROVEEDORES){
+    const copia={...p};
+    copia.fotos={};
+    for(const slot of ['producto','tarjeta','contacto']){
+      copia.fotos[slot] = (p.fotos && p.fotos[slot]) ? await blobToBase64(p.fotos[slot]) : null;
+    }
+    data.proveedores.push(copia);
+  }
+  const json=JSON.stringify(data);
+  const blob=new Blob([json], {type:'application/json'});
+  const nombreArchivo='feria_canton_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  const file=new File([blob], nombreArchivo, {type:'application/json'});
+
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file], title:'Respaldo Feria Cantón'}); return; }catch(e){ /* usuario canceló o falló — cae al link */ }
+  }
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=nombreArchivo;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function exportarCSV(){
+  if(!PROVEEDORES.length){ alert('No hay registros todavía.'); return; }
+  const cols=['nombre','categoria','moq','stand','proveedor','rating','nota','fecha'];
+  const rows=[cols.concat(['precio_resumen']).join(',')];
+  PROVEEDORES.forEach(p=>{
+    const vals=cols.map(c=>`"${String(p[c]??'').replace(/"/g,'""')}"`);
+    vals.push(`"${fmtPrecioResumen(p).replace(/"/g,'""')}"`);
+    rows.push(vals.join(','));
+  });
+  const blob=new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='feria_canton_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function compartirWhatsApp(){
+  if(!PROVEEDORES.length){ alert('No hay registros todavía.'); return; }
+  let texto='Feria Cantón — mis registros:\n\n';
+  PROVEEDORES.slice(0,15).forEach(p=>{
+    texto+=`• ${p.nombre} (${p.categoria}) — ${fmtPrecioResumen(p)} — MOQ ${p.moq||'?'} — ${'★'.repeat(p.rating)}\n`;
+  });
+  if(PROVEEDORES.length>15) texto+=`\n...y ${PROVEEDORES.length-15} más (ver exportar completo).`;
+  window.open('https://wa.me/?text='+encodeURIComponent(texto), '_blank');
+}
+
+init();
+</script>
+</body>
+</html>
