@@ -559,7 +559,7 @@ const CATEGORIAS = [
      {nombre:'Dahua Technology',producto:'Kits NVR IP 4K, ~20% más barato.',stand:'No confirmado',conf:'no'},
      {nombre:'Reolink',producto:'WiFi 4K standalone, batería solar.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'bebe',emoji:'👶',nombre:'Artículos para Bebé y Niño',fase:2,zona:'Halls 7.1–8.2',pri:true,
+  {id:'bebe',emoji:'👶',nombre:'Artículos para Bebé y Niño (descartado 6 oct — no interesa; además conflicto de fase sin resolver)',fase:2,zona:'Halls 7.1–8.2',
    empresas:[
      {nombre:'Nuby',producto:'Mordedores silicona · Biberones anticólico. FDA/EN71.',stand:'No confirmado',conf:'no'},
      {nombre:'B-Duck Baby Products',producto:'Bañeras plegables · Sets de aseo.',stand:'No confirmado',conf:'no'},
@@ -568,16 +568,22 @@ const CATEGORIAS = [
      {nombre:'Foshan Yongjianxing Technology',producto:'Babero, bowl y plato de silicona para bebé.',stand:'No confirmado',conf:'no'},
      {nombre:'Dongguan Shengkai Silicone Products',producto:'Mordedores, feeding sets y vajilla de silicona bebé.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'deco',emoji:'🎁',nombre:'Decoración y Regalos',fase:2,zona:'Halls 13.1–14.2',
+  {id:'tirasled',emoji:'💡',nombre:'Tiras LED y Neon Flex',fase:2,nuevo:true,pri:true,zona:'Hall 14.3 (Gifts & Home Decorations)',
+   empresas:[
+     {nombre:'Surmountor Lighting',producto:'LED neon light, COB strip, sensor switch decorativo.',stand:'14.3 H04',conf:'proyectado'},
+     {nombre:'Glamor Optoelectronics Technology',producto:'LED string/rope light, neon flex, motif light.',stand:'14.3 D06–D07',conf:'proyectado'},
+   ]},
+  {id:'navidena',emoji:'🎄',nombre:'Decoración Navideña (no prioritario — solo si sobra tiempo)',fase:2,zona:'Halls 13.1–14.2 (misma zona que Tiras LED)',
+   empresas:[
+     {nombre:'Yiwu Yun Mai Craftwork',producto:'Árboles de Navidad, guirnaldas y coronas artificiales.',stand:'No confirmado',conf:'no'},
+     {nombre:'Yiwu Mali Tree Christmas Arts and Crafts',producto:'Árboles de Navidad artificiales, 20+ años en el rubro.',stand:'No confirmado',conf:'no'},
+     {nombre:'Shuangyuan Group',producto:'Uno de los mayores fabricantes de decoración navideña de China.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'decogeneral',emoji:'🎁',nombre:'Decoración y Regalos general (descartado 6 oct — no interesa)',fase:2,zona:'Halls 13.1–14.2',
    empresas:[
      {nombre:'DH Crafts & Décor',producto:'Resina y madera. MOQ ~50.',stand:'No confirmado',conf:'no'},
      {nombre:'Yiwu Trade Pavilion',producto:'Representa cientos de fábricas de Yiwu.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangzhou Artisan Gift',producto:'Regalos corporativos. MOQ 100.',stand:'No confirmado',conf:'no'},
-     {nombre:'Surmountor Lighting',producto:'LED neon light, COB strip, sensor switch decorativo.',stand:'14.3 H04',conf:'proyectado'},
-     {nombre:'Glamor Optoelectronics Technology',producto:'LED string/rope light, neon flex, motif light.',stand:'14.3 D06–D07',conf:'proyectado'},
-     {nombre:'Yiwu Yun Mai Craftwork',producto:'Árboles de Navidad, guirnaldas y coronas artificiales.',stand:'No confirmado',conf:'no'},
-     {nombre:'Yiwu Mali Tree Christmas Arts and Crafts',producto:'Árboles de Navidad artificiales, 20+ años en el rubro.',stand:'No confirmado',conf:'no'},
-     {nombre:'Shuangyuan Group',producto:'Uno de los mayores fabricantes de decoración navideña de China.',stand:'No confirmado',conf:'no'},
    ]},
   {id:'hogar',emoji:'🏠',nombre:'Hogar y Cocina',fase:2,zona:'Halls 1.1–3.2',
    empresas:[
@@ -592,7 +598,7 @@ const CATEGORIAS = [
      {nombre:'NVC Lighting',producto:'Tiras IP65 exterior · Focos PAR.',stand:'No confirmado',conf:'no'},
      {nombre:'MLS Co. Ltd',producto:'Bombillas E27 a granel. MOQ 500.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'epp',emoji:'🦺',nombre:'EPP, Herramientas y Candados',fase:1,zona:'Halls 5.1–7.2 y 10.1–11.1',
+  {id:'epp',emoji:'🦺',nombre:'EPP, Herramientas y Candados',fase:1,pri:true,zona:'Halls 5.1–7.2 y 10.1–11.1',
    empresas:[
      {nombre:'Zhejiang Longhua Safety Equipment',producto:'Cascos ABS · Kits EPP. MOQ 200.',stand:'No confirmado',conf:'no'},
      {nombre:'MSA Safety China',producto:'Cascos V-Gard CE/ANSI.',stand:'No confirmado',conf:'no'},
@@ -623,7 +629,7 @@ const CATEGORIAS = [
      {nombre:'Guangdong Jiutu Houseware',producto:'Amenities de baño inox.',stand:'No confirmado',conf:'no'},
      {nombre:'Supor Food Service',producto:'Vajilla inox room service.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'ganaderia',emoji:'🐷',nombre:'Ganadería y Riego',fase:1,zona:'Área exterior norte/sur · Área B',
+  {id:'ganaderia',emoji:'🐷',nombre:'Ganadería y Riego',fase:1,pri:true,zona:'Área exterior norte/sur · Área B',
    empresas:[
      {nombre:'Xinhua Poultry Equipment',producto:'Bebederos nipple · Comederos tolva 10-20kg.',stand:'No confirmado',conf:'no'},
      {nombre:'Henan Muwei Livestock',producto:'Comederos automáticos cerdo · Calefactores.',stand:'No confirmado',conf:'no'},
@@ -665,7 +671,7 @@ const CATEGORIAS = [
      {nombre:'DARIUS',producto:'Pistolas de masaje, masajeadores de pie, cuello y hombro.',stand:'No confirmado',conf:'no'},
      {nombre:'SKG INNO',producto:'Masajeador de cuello, pistola de masaje, marca reconocida.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'macetas',emoji:'🪴',nombre:'Macetas y Jardineras',fase:2,zona:'Halls 6.1/8.0 y 11.1–12.2 (Jardinería)',
+  {id:'macetas',emoji:'🪴',nombre:'Macetas y Jardineras',fase:2,pri:true,zona:'Halls 6.1/8.0 y 11.1–12.2 (Jardinería)',
    empresas:[
      {nombre:'Ronbo Sunrise Plastic',producto:'Macetas plásticas, herramientas de jardín.',stand:'6.1 K24/L23 · 8.0 A25',conf:'media'},
      {nombre:'Oceangoing Biz',producto:'Macetas y jardineras metálicas, desde US$4.6/pieza.',stand:'No confirmado',conf:'no'},
@@ -678,17 +684,61 @@ const CATEGORIAS = [
      {nombre:'Guangzhou Hongling Kitchen Equipment',producto:'Granizado 1-3 tanques, 12L/tanque.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangzhou Sawish Kitchen Equipment',producto:'Slush machines comerciales.',stand:'No confirmado',conf:'no'},
    ]},
-  {id:'escolar',emoji:'🪑',nombre:'Mobiliario Escolar (Carpetas con asiento)',fase:2,nuevo:true,pri:true,zona:'Halls 9.2–13.2 (Furniture, +900 expositores)',
+  {id:'escolar',emoji:'🪑',nombre:'Mobiliario Escolar ampliado (Carpetas + Mesas de laboratorio + Lockers)',fase:2,nuevo:true,pri:true,zona:'Halls 9.2–13.2 (Furniture, +900 expositores)',
    empresas:[
      {nombre:'Jiansheng Group / Fujian Jiansheng Furniture',producto:'Pupitre+silla combinado ergonómico de aula (modelo HY-0360K), mobiliario modular, también mobiliario médico y gabinetes de acero.',stand:'10.2 G23-25 y 10.2 H22-24',conf:'proyectado'},
      {nombre:'AOYASI Furniture Co., Ltd',producto:'Pupitres y sillas de aula, literas de dormitorio estudiantil.',stand:'11.3 F03-04 (stand de edición de primavera, sin confirmar para otoño)',conf:'no'},
      {nombre:'Guangdong Wanrui Furniture Industry',producto:'Pupitres y sillas escolares, mobiliario de aula completo.',stand:'No confirmado',conf:'no'},
+     {nombre:'Por confirmar en el stand',producto:'Mesas de laboratorio y lockers escolares — ampliación pedida el 6 oct, ideal para el Instituto Técnico SAP.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'fumigadoras',emoji:'🦟',nombre:'Fumigadoras ULV Portátiles (anti-dengue)',fase:1,nuevo:true,pri:true,zona:'Halls 3.1–4.2 (buscar en Electrodomésticos o Maquinaria Agrícola, sin confirmar)',
+   empresas:[
+     {nombre:'Henan Zealyu Machinery',producto:'Fumigadoras / motobombas ULV portátiles para control de mosquito y plagas.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'deshidratadoras',emoji:'🍓',nombre:'Selladoras al Vacío + Deshidratadoras',fase:1,nuevo:true,pri:true,zona:'Halls 3.1–4.2 (Processing Machinery / Electrodomésticos)',
+   empresas:[
+     {nombre:'SUNSIR',producto:'Deshidratadoras de alimentos industriales y domésticas.',stand:'No confirmado',conf:'no'},
+     {nombre:'Dongguan Timakes Electronics',producto:'Selladoras al vacío domésticas y semi-industriales.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'cafearroz',emoji:'☕',nombre:'Equipos para Café y Arroz',fase:1,nuevo:true,pri:true,zona:'Área B exterior (Agricultural Machinery, misma zona que Ganadería/Bombas)',
+   empresas:[
+     {nombre:'Por confirmar en el stand',producto:'Despulpadoras, secadoras y procesadoras de café · Trilladoras y procesadoras de arroz.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'solaril',emoji:'🔆',nombre:'Iluminación Solar Exterior',fase:1,nuevo:true,pri:true,zona:'Hall 14.2–15.2 (misma zona que Placas Solares)',
+   empresas:[
+     {nombre:'Jiangsu Yingbin Lighting',producto:'Farolas solares todo-en-uno para exteriores.',stand:'No confirmado',conf:'no'},
+     {nombre:'Ningbo Magic Cube',producto:'Luces solares de jardín y reflectores solares.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'seguridad',emoji:'🔐',nombre:'Control de Acceso / Torniquetes',fase:1,nuevo:true,pri:true,zona:'Hall 17.2 (zona distante de los demás stands de Día 2 — reservar tiempo extra de traslado)',
+   empresas:[
+     {nombre:'HFSecurity',producto:'Sistemas de control de acceso y torniquetes para colegio/instituto.',stand:'17.2 C05-06',conf:'alta'},
+   ]},
+  {id:'panelesconstruccion',emoji:'🧱',nombre:'SPC / WPC / Paneles Acústicos',fase:2,nuevo:true,pri:true,zona:'Building and Decorative Materials (Fase 2, hall sin confirmar)',
+   empresas:[
+     {nombre:'Por confirmar en el stand',producto:'Pisos SPC, paneles de pared WPC, paneles PVC imitación mármol, paneles acústicos de listones, cielos rasos. Alternativa liviana al porcelanato/mármol ya descartados.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'prefabricadas',emoji:'🏠',nombre:'Casas Prefabricadas / Contenedor (scouting de proveedor, no compra directa)',fase:2,nuevo:true,pri:true,zona:'Zonas exteriores 9.0 / 12.0 / 13.0 (Prefabricated House and Courtyard Facilities)',
+   empresas:[
+     {nombre:'Por confirmar en el stand',producto:'Casas prefabricadas expandibles, casas contenedor, tiny houses, aulas prefabricadas. Sacar catálogo y precios, no comprar en el momento.',stand:'No confirmado',conf:'no'},
+     {nombre:'Por confirmar en el stand',producto:'Baños prefabricados y saunas exteriores (mismo expositor o stand vecino) — secundario, solo si sobra tiempo.',stand:'No confirmado',conf:'no'},
+     {nombre:'Por confirmar en el stand',producto:'Jacuzzis interiores para hotel (categoría Sanitarios, cerca de esta zona) — secundario, solo si sobra tiempo.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'mueblesrestaurante',emoji:'🍽️',nombre:'Mesas y Sillas de Restaurante / Cafetería',fase:2,nuevo:true,pri:true,zona:'Halls 9.3–11.3 (Furniture — mismo edificio que Mobiliario Escolar)',
+   empresas:[
+     {nombre:'Por confirmar en el stand',producto:'Mesas y sillas de restaurante, muebles de cafetería, sofá cama.',stand:'No confirmado',conf:'no'},
+   ]},
+  {id:'hogarextra',emoji:'🍴',nombre:'Cuchillos, Tuppers y Plástico para el Hogar',fase:2,zona:'Halls 1.1–3.2 (mismo edificio que Loncheras/Hogar y Cocina)',
+   empresas:[]},
+  {id:'saludextra',emoji:'🚰',nombre:'Enfriadores de Agua y Equipos de Diagnóstico',fase:2,zona:'Halls 6.1–7.2 (misma zona que Agua/Bienestar)',
+   empresas:[
+     {nombre:'Transtek',producto:'Oxímetros, tensiómetros digitales.',stand:'No confirmado',conf:'no'},
+     {nombre:'Contec Medical',producto:'Termómetros infrarrojos, glucómetros.',stand:'No confirmado',conf:'no'},
    ]},
   // Categorías libres heredadas de la v1 de esta app — no tienen empresas precargadas
   {id:'motopartes',emoji:'🏍️',nombre:'Motopartes (🚫 descartado — mercado saturado)',fase:1,zona:'Halls 10.1–10.2',empresas:[]},
   {id:'otros',emoji:'❓',nombre:'Otros / algo nuevo que encontraste',fase:0,zona:null,empresas:[]},
 ];
-const ARANCEL_POR_CAT={loncheras:6,movil:0,ventiladores:6,agua:6,cctv:0,bebe:11,deco:11,hogar:6,iluminacion:6,epp:6,electro:6,audiovisual:0,hoteleria:11,ganaderia:6,granizados:6,motopartes:6,otros:6,bombas:6,solar:0,generadores:6,sanitarios:11,bienestar:0,macetas:11};
+const ARANCEL_POR_CAT={loncheras:6,movil:0,ventiladores:6,agua:6,cctv:0,bebe:11,hogar:6,iluminacion:6,epp:6,electro:6,audiovisual:0,hoteleria:11,ganaderia:6,granizados:6,motopartes:6,otros:6,bombas:6,solar:0,generadores:6,sanitarios:11,bienestar:0,macetas:11,escolar:6,fumigadoras:6,deshidratadoras:6,cafearroz:6,solaril:6,seguridad:6,panelesconstruccion:6,prefabricadas:6,mueblesrestaurante:6,tirasled:11,navidena:11,decogeneral:11,hogarextra:6,saludextra:6};
 const CONF_ICON={alta:'✅',media:'🟡',proyectado:'🔮',no:'⚠️'};
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -720,12 +770,19 @@ const ITINERARIO = [
      ['AIRMATE','Ventiladores de techo, fans de escritorio motor-DC.',''],
      ['Gree Electric Appliances','Fans de columna y techo, serie tropical.',''],
    ]},
-   {catId:'electro', zona:'Halls 3.1–4.2 (misma área que Ventiladores)', pri:5, opc:true, es:[
+   {catId:'fumigadoras', zona:'Halls 3.1–4.2 (buscar aquí, sin confirmar)', pri:5, opc:false, es:[
+     ['Henan Zealyu Machinery','Fumigadoras/motobombas ULV portátiles para mosquito y plagas.',''],
+   ]},
+   {catId:'deshidratadoras', zona:'Halls 3.1–4.2 (Processing Machinery)', pri:6, opc:false, es:[
+     ['SUNSIR','Deshidratadoras de alimentos industriales y domésticas.',''],
+     ['Dongguan Timakes Electronics','Selladoras al vacío domésticas y semi-industriales.',''],
+   ]},
+   {catId:'electro', zona:'Halls 3.1–4.2 (misma área que Ventiladores)', pri:7, opc:true, es:[
      ['Bear Electric Appliance','Freidoras de aire 3.5-5.5L, licuadoras portátiles USB.',''],
      ['Midea Kitchen Division','Tostadoras, cafeteras de filtro, microondas compactos.',''],
      ['Joyoung Appliances','Exprimidores automáticos, batidoras, arroceras mini.',''],
    ]},
-   {catId:'granizados', zona:'Halls 3.1–4.2 y zona catering (Área D)', pri:6, opc:true, es:[
+   {catId:'granizados', zona:'Halls 3.1–4.2 y zona catering (Área D)', pri:8, opc:true, es:[
      ['Guangzhou Hongling Kitchen Equipment','Granizadoras comerciales 1-3 tanques, 12L/tanque.',''],
      ['Guangzhou Sawish Kitchen Equipment','Slush machines / cold drink machines comerciales.',''],
    ]},
@@ -752,24 +809,34 @@ const ITINERARIO = [
      ['Bluesun Solar','Paneles solares alta eficiencia, sistemas BESS.','Hall 15.2, C32-33 y D10-11'],
      ['Kingfit Energy','Baterías litio, inversores híbridos/off-grid.','Hall 15.2, G01-02'],
    ]},
-   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:6, opc:false, es:[
+   {catId:'solaril', zona:'Hall 14.2–15.2 (misma zona que Placas Solares)', pri:6, opc:false, es:[
+     ['Jiangsu Yingbin Lighting','Farolas solares todo-en-uno para exteriores.',''],
+     ['Ningbo Magic Cube','Luces solares de jardín y reflectores solares.',''],
+   ]},
+   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:7, opc:false, es:[
      ['Worksite','Taladros, amoladoras, sierras, herramienta eléctrica.','10.2 H33-35 / I13-15'],
      ['HANVO Safety','Guantes de seguridad construcción/jardín/logística.','10.1 D33-34'],
      ['Safetoe','Calzado de seguridad, guantes, gafas anti-empañantes.','11.1 A19-20 B03-04'],
      ['Blossom','Candados de latón/hierro/inox, candado con huella digital.','A-1.1 G47-48, H01-02'],
      ['Zhejiang Longhua Safety Equipment','Cascos ABS clase E, kits EPP completos, MOQ 200.',''],
    ]},
-   {catId:'generadores', zona:'Área B exterior norte (Maquinaria e Industria)', pri:7, opc:true, es:[
+   {catId:'cafearroz', zona:'Área B exterior (misma zona que Ganadería/Bombas)', pri:8, opc:false, es:[
+     ['Por confirmar en el stand','Despulpadoras, secadoras y procesadoras de café · Trilladoras y procesadoras de arroz.',''],
+   ]},
+   {catId:'seguridad', zona:'Hall 17.2 — zona distante, reservar tiempo extra de traslado', pri:9, opc:false, es:[
+     ['HFSecurity','Sistemas de control de acceso y torniquetes para colegio/instituto.','17.2 C05-06'],
+   ]},
+   {catId:'generadores', zona:'Área B exterior norte (Maquinaria e Industria)', pri:10, opc:true, es:[
      ['Jiangsu ETK Power Technology','Generadores portátiles diésel 2-5kW.',''],
      ['GB Power','Generadores diésel portátiles 2-5.5kW, insonorizados.',''],
      ['JLT Power','Generadores portátiles a gasolina 2.5-3kW.',''],
      ['Lutian Machinery Co.','Generadores a gasolina 2.0-2.5kW, también bombas de agua.',''],
    ]},
-   {catId:'solar', zona:'Zona New Energy Resources', pri:8, opc:true, es:[
+   {catId:'solar', zona:'Zona New Energy Resources', pri:11, opc:true, es:[
      ['GSO (Jiangsu Green Solar Energy)','Sistemas de almacenamiento de energía solar.','Hall 14.3, E26'],
      ['Namkoo','Sistemas de energía solar y almacenamiento.','Hall 14.2, E04 (edición sin confirmar)'],
    ]},
-   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:9, opc:true, es:[
+   {catId:'epp', zona:'Zona EPP / Herramientas / Candados', pri:12, opc:true, es:[
      ['MSA Safety China','Cascos V-Gard CE/ANSI, arneses de altura.',''],
      ['Deltaplus China','Guantes anticorte N5, calzado S3 SRC.',''],
      ['Shandong Xingyu Gloves','Guantes de protección industrial, 30+ años.',''],
@@ -788,6 +855,9 @@ const ITINERARIO = [
    {catId:'loncheras', zona:'Halls 1.1–2.2 · Área A (Kitchenware)', pri:2, opc:true, es:[
      ['Guangzhou Koodee Metal','Botellas de agua inox, tumblers, mugs de café.',''],
    ]},
+   {catId:'hogarextra', zona:'Mismo edificio que Loncheras (Halls 1.1–3.2)', pri:3, opc:true, es:[
+     ['Por confirmar en el stand','Tuppers / contenedores herméticos — complemento natural de las loncheras.',''],
+   ]},
  ]},
  {id:4, fecha:'Sáb 24 oct', fase:2, grupos:[
    {catId:'hogar', zona:'Halls 1.1–3.2 · Área A (mismo edificio que Loncheras)', pri:1, opc:false, es:[
@@ -802,6 +872,9 @@ const ITINERARIO = [
    {catId:'sanitarios', zona:'Halls 8.1–8.4 · Área B/C (Sanitary & Bathroom Equipment)', pri:3, opc:true, es:[
      ['Kaiping City Yibiao Sanitary Ware','Grifos y mezcladoras de baño.',''],
      ['Kaiping City Kaipu Sanitary Ware','Grifería y sanitarios, expositor en ferias del rubro.',''],
+   ]},
+   {catId:'hogarextra', zona:'Mismo edificio, Halls 1.1–3.2', pri:4, opc:true, es:[
+     ['Por confirmar en el stand','Cuchillos de cocina sueltos (fuera de los sets de Hogar y Cocina) · Artículos de plástico para el hogar.',''],
    ]},
  ]},
  {id:5, fecha:'Dom 25 oct', fase:2, grupos:[
@@ -818,31 +891,42 @@ const ITINERARIO = [
      ['DARIUS','Pistolas de masaje, masajeadores de pie, cuello y hombro.',''],
      ['SKG INNO','Masajeador de cuello, pistola de masaje, marca reconocida.',''],
    ]},
+   {catId:'saludextra', zona:'Misma zona, Halls 6.1–7.2', pri:4, opc:true, es:[
+     ['Royalstar Appliances','Enfriadores de agua (dispensador frío/caliente) — mismo stand que Purificadores.',''],
+     ['Transtek','Oxímetros, tensiómetros digitales.',''],
+     ['Contec Medical','Termómetros infrarrojos, glucómetros.',''],
+   ]},
  ]},
  {id:6, fecha:'Lun 26 oct', fase:2, grupos:[
-   {catId:'bebe', zona:'Halls 7.1–8.2 · Área B (Consumer Goods)', pri:1, opc:false, es:[
-     ['Nuby','Mordedores silicona, biberones anticólico, cubiertos bebé.',''],
-     ['B-Duck Baby Products','Bañeras plegables, termómetros de bañera, sets de aseo.',''],
-     ['Guangdong Baby Kingdom','Sets recién nacido, almohadas ergonómicas, monitores básicos.',''],
-     ['Wo Silicone Tech','Feeding sets silicona: bowls, platos, babero, cuchara.',''],
-     ['Foshan Yongjianxing Technology','Babero, bowl y plato de silicona para bebé.',''],
-   ]},
-   {catId:'bebe', zona:'Halls 7.1–8.2 · Área B (Consumer Goods)', pri:2, opc:true, es:[
-     ['Dongguan Shengkai Silicone Products','Mordedores, feeding sets y vajilla de silicona bebé.',''],
-   ]},
- ]},
- {id:7, fecha:'Mar 27 oct', fase:2, grupos:[
-   {catId:'deco', zona:'Halls 13.1–14.2 · Área D (Gifts & Home Decorations)', pri:1, opc:false, es:[
+   {catId:'tirasled', zona:'Hall 14.3 (Gifts & Home Decorations)', pri:1, opc:false, es:[
      ['Surmountor Lighting','LED neon light, COB strip, sensor switch decorativo.','14.3 H04'],
-     ['DH Crafts & Décor','Decorativos de resina y madera, MOQ bajo (~50 uds).',''],
-     ['Yiwu Trade Pavilion','Representa cientos de fabricantes de Yiwu, precio de fábrica.',''],
-     ['Guangzhou Artisan Gift','Regalos corporativos personalizables, MOQ 100.',''],
      ['Glamor Optoelectronics Technology','LED string/rope light, neon flex, motif light.','Hall 14.3 D06–D07'],
    ]},
-   {catId:'deco', zona:'Halls 13.1–14.2 · Área D (Gifts & Home Decorations)', pri:2, opc:true, es:[
+   {catId:'panelesconstruccion', zona:'Building and Decorative Materials (hall sin confirmar)', pri:2, opc:false, es:[
+     ['Por confirmar en el stand','Pisos SPC, paneles de pared WPC, paneles PVC imitación mármol, paneles acústicos, cielos rasos.',''],
+   ]},
+   {catId:'prefabricadas', zona:'Zonas exteriores 9.0 / 12.0 / 13.0 (Prefabricated House)', pri:3, opc:false, es:[
+     ['Por confirmar en el stand','Casas prefabricadas expandibles, casas contenedor, tiny houses, aulas prefabricadas — visita de reconocimiento de proveedor, no de compra.',''],
+   ]},
+   {catId:'navidena', zona:'Halls 13.1–14.2 (misma zona que Tiras LED)', pri:4, opc:true, es:[
      ['Yiwu Yun Mai Craftwork','Árboles de Navidad, guirnaldas y coronas artificiales.',''],
      ['Yiwu Mali Tree Christmas Arts and Crafts','Árboles de Navidad artificiales, 20+ años en el rubro.',''],
      ['Shuangyuan Group','Uno de los mayores fabricantes de decoración navideña de China.',''],
+   ]},
+   {catId:'prefabricadas', zona:'Misma zona exterior, stand vecino', pri:5, opc:true, es:[
+     ['Por confirmar en el stand','Baños prefabricados y saunas exteriores.',''],
+     ['Por confirmar en el stand','Jacuzzis interiores para hotel (categoría Sanitarios, cerca de esta zona).',''],
+   ]},
+ ]},
+ {id:7, fecha:'Mar 27 oct', fase:2, grupos:[
+   {catId:'escolar', zona:'Halls 9.2–13.2 · Furniture Section (+900 expositores)', pri:1, opc:false, es:[
+     ['Jiansheng Group','Pupitre+silla combinado ergonómico de aula (HY-0360K), mobiliario modular.','10.2 G23-25 y 10.2 H22-24'],
+     ['AOYASI Furniture','Pupitres y sillas de aula, literas de dormitorio (stand de primavera, sin confirmar otoño).',''],
+     ['Guangdong Wanrui Furniture','Pupitres y sillas escolares, mobiliario de aula completo.',''],
+     ['Por confirmar en el stand','Mesas de laboratorio y lockers escolares — ampliación 6 oct, ideal para el Instituto Técnico SAP.',''],
+   ]},
+   {catId:'mueblesrestaurante', zona:'Halls 9.3–11.3 (mismo edificio que Mobiliario Escolar)', pri:2, opc:false, es:[
+     ['Por confirmar en el stand','Mesas y sillas de restaurante, muebles de cafetería, sofá cama.',''],
    ]},
    {catId:'hoteleria', zona:'Halls 1.1–3.2 y 9.1–9.2 · Área A/C (vajilla y cerámica)', pri:3, opc:true, es:[
      ['Guangzhou Brilliant Ceramics','Porcelana personalizable con logo hotel, sets desayuno.',''],
@@ -853,11 +937,6 @@ const ITINERARIO = [
      ['Ronbo Sunrise Plastic','Macetas plásticas, herramientas de jardín.','6.1 K24/L23 · 8.0 A25 (edición no confirmada)'],
      ['Oceangoing Biz','Macetas y jardineras metálicas, desde US$4.6/pieza.',''],
      ['YEAHFLOWER','Plantas y flores artificiales, decoración de exteriores.',''],
-   ]},
-   {catId:'escolar', zona:'Halls 9.2–13.2 · Furniture Section (+900 expositores)', pri:5, opc:false, es:[
-     ['Jiansheng Group','Pupitre+silla combinado ergonómico de aula (HY-0360K), mobiliario modular.','10.2 G23-25 y 10.2 H22-24'],
-     ['AOYASI Furniture','Pupitres y sillas de aula, literas de dormitorio (stand de primavera, sin confirmar otoño).',''],
-     ['Guangdong Wanrui Furniture','Pupitres y sillas escolares, mobiliario de aula completo.',''],
    ]},
  ]},
  {id:'sup', fecha:'Sin día fijo — suplentes', fase:null, grupos:[
@@ -870,6 +949,16 @@ const ITINERARIO = [
      ['Opple Lighting','Paneles LED 60x60 40W, downlights.',''],
      ['NVC Lighting','Tiras IP65 exterior, focos PAR.',''],
      ['MLS Co.','Bombillas E27 a granel, MOQ 500.',''],
+   ]},
+   {catId:'decogeneral', zona:'Halls 13.1–14.2 — descartado 6 oct, no interesa', pri:null, opc:true, es:[
+     ['DH Crafts & Décor','Decorativos de resina y madera, MOQ bajo (~50 uds).',''],
+     ['Yiwu Trade Pavilion','Representa cientos de fábricas de Yiwu.',''],
+     ['Guangzhou Artisan Gift','Regalos corporativos. MOQ 100.',''],
+   ]},
+   {catId:'bebe', zona:'Halls 7.1–8.2 — descartado 6 oct, no interesa (además conflicto de fase sin resolver)', pri:null, opc:true, es:[
+     ['Nuby','Mordedores silicona, biberones anticólico, cubiertos bebé.',''],
+     ['B-Duck Baby Products','Bañeras plegables, termómetros de bañera, sets de aseo.',''],
+     ['Guangdong Baby Kingdom','Sets recién nacido, almohadas ergonómicas, monitores básicos.',''],
    ]},
  ]},
 ];
@@ -969,7 +1058,7 @@ const ZONAS=[
    {n:'Ventiladores y Cooling',pri:1},
    {n:'Electrodomésticos Pequeños'},
    {n:'Dispensadores de Agua Hot/Cold'},
-   {n:'Selladoras al vacío + Deshidratadoras',nuevo:1,e:'SUNSIR · Dongguan Timakes',conf:'no',nota:'Buscar aquí, sin stand confirmado. Única idea que crea producto propio (snacks deshidratados).'},
+   {n:'Selladoras al vacío + Deshidratadoras',pri:1,nuevo:1,e:'SUNSIR · Dongguan Timakes',conf:'no',nota:'Confirmado también por tu propia investigación (Envasadoras/Deshidratadores). Única idea que crea producto propio (snacks deshidratados).'},
    {n:'Fumigadoras ULV / anti-dengue',pri:1,nuevo:1,e:'Henan Zealyu Machinery',conf:'no',nota:'🏆 Mega-hallazgo — San Martín es zona endémica de dengue. Buscar aquí o en maquinaria exterior.'},
  ]},
  {id:'z3',hall:'Halls 5.1–7.2 y 10.1–11.1',fase:1,nombre:'Hardware, Herramientas y EPP',fam:[
@@ -981,11 +1070,13 @@ const ZONAS=[
    {n:'Equipos de Soldadura',nuevo:1,e:'Perfect Power, D47-48/E01-02',conf:'alta',nota:'Confirmado para tu edición exacta — verificar 220V monofásico, no trifásico.'},
  ]},
  {id:'z5',hall:'Halls 9.1–9.4',fase:1,nombre:'Iluminación LED',fam:[
-   {n:'LED Residencial y Comercial',pri:1,e:'Opple · NVC · MLS'},
-   {n:'Iluminación Solar exterior',e:'Jiangsu Yingbin · Ningbo Magic Cube'},
+   {n:'LED Residencial y Comercial',e:'Opple · NVC · MLS',nota:'Reclasificado 6 oct: confirmaste que lo que te interesa es la variante SOLAR, no esta genérica.'},
+ ]},
+ {id:'z5b',hall:'Hall 14.2–15.2',fase:1,nombre:'Iluminación Solar (misma zona que Placas Solares)',fam:[
+   {n:'Iluminación Solar exterior',pri:1,e:'Jiangsu Yingbin Lighting · Ningbo Magic Cube',nota:'Confirmado 6 oct — esta es la que de verdad te interesa (farolas/luces solares de jardín).'},
  ]},
  {id:'z6',hall:'Hall 10.2',fase:1,nombre:'Mobiliario Escolar y Motos (hall mixto)',fam:[
-   {n:'Mobiliario Escolar',pri:1,e:'Jiansheng Group, G23-25/H22-24',conf:'media',nota:'Confirmado edición otoño 2025, mismas fechas que tu Fase 2.'},
+   {n:'Mobiliario Escolar ampliado (+ mesas de laboratorio + lockers)',pri:1,e:'Jiansheng Group, G23-25/H22-24',conf:'media',nota:'Confirmado edición otoño 2025, mismas fechas que tu Fase 2. Ampliado 6 oct con mesas de laboratorio y lockers para el Instituto Técnico SAP.'},
    {n:'Motopartes',desc:1,nota:'🚫 Descartado — mercado saturado confirmado en campo por tu hermana.'},
  ]},
  {id:'z7',hall:'Halls 14.2–15.2',fase:1,nombre:'Nuevas Energías',fam:[
@@ -994,9 +1085,10 @@ const ZONAS=[
  ]},
  {id:'z8',hall:'Área B exterior norte/sur',fase:1,nombre:'Maquinaria Agrícola y Ganadería',fam:[
    {n:'Ganadería y Riego',pri:1,e:'Xinhua Poultry · Henan Muwei · Shandong Qinchuan'},
-   {n:'Sistemas de Riego por Goteo',pri:1,e:'Hebei Plentirain · Chinadrip'},
+   {n:'Sistemas de Riego por Goteo (agrícola)',pri:1,e:'Hebei Plentirain · Chinadrip',nota:'Distinto del riego de jardín doméstico de Fase 2 (ver zona Jardinería) — no confundir los dos.'},
    {n:'Bombas de Agua',e:'Shinhoo · DAYUAN · Lutian'},
    {n:'Generadores Portátiles',e:'Jiangsu ETK · GB Power · JLT · Lutian'},
+   {n:'Equipos para Café y Arroz',pri:1,nuevo:1,e:'Por confirmar en el stand',conf:'no',nota:'Confirmado 6 oct — San Martín es zona cafetalera y arrocera real. Misma zona exterior, sin costo extra de día.'},
  ]},
  {id:'z9',hall:'Halls 10.1–10.2 y exterior',fase:1,nombre:'Vehículos y Repuestos',fam:[
    {n:'Accesorios de Auto',e:'Wemaer · STEELMATE'},
@@ -1006,17 +1098,19 @@ const ZONAS=[
    {n:'Básculas digitales comerciales',nuevo:1,e:'Camry (visto en 133ª)',conf:'no',nota:'Pesar cerdos/alimento en granja + venta comercial general.'},
  ]},
  {id:'z11',hall:'Halls 1.1–3.2',fase:2,nombre:'Vajilla, Utensilios y Hogar',fam:[
-   {n:'Loncheras y Termos',pri:1,e:'HAERS, 2.2 D42-53'},
+   {n:'Loncheras y Termos',pri:1,e:'HAERS, 2.2 D42-53',nota:'Confirmado 6 oct — ¡marcado!'},
    {n:'Hogar y Cocina',e:'Supor · ASD · Joyoung'},
+   {n:'Tuppers / Cuchillos / Artículos plástico hogar',nota:'Añadido 6 oct como "a mirar" — mismo edificio que Loncheras/Hogar.'},
    {n:'Organizadores y Almacenamiento'},
  ]},
  {id:'z12',hall:'Halls 6.1–7.2',fase:2,nombre:'Salud, Bienestar y Purificación',fam:[
-   {n:'Purificadores y Filtros de Agua',pri:1,e:'Angel Water · Frizzlife · Royalstar'},
-   {n:'Equipos de Diagnóstico Doméstico',e:'Transtek · Contec'},
-   {n:'Masajeadores y Bienestar',e:'SKG INNO · DARIUS'},
+   {n:'Purificadores y Filtros de Agua',pri:1,e:'Angel Water · Frizzlife · Royalstar',nota:'Confirmado 6 oct — interesa.'},
+   {n:'Enfriadores de Agua',e:'Royalstar Appliances (mismo stand que Purificadores)',nota:'Añadido 6 oct como "a mirar".'},
+   {n:'Equipos de Diagnóstico Doméstico',e:'Transtek · Contec',nota:'Añadido 6 oct como "a mirar".'},
+   {n:'Masajeadores y Bienestar',e:'SKG INNO · DARIUS',nota:'⚠️ Conflicto de fase sin resolver — otra fuente lo marca Fase 3.'},
  ]},
  {id:'z13',hall:'Halls 7.1–8.2',fase:2,nombre:'Bebé y Niño',fam:[
-   {n:'Artículos para Bebé',pri:1,e:'Nuby · B-Duck · Guangdong Baby Kingdom'},
+   {n:'Artículos para Bebé',desc:1,e:'Nuby · B-Duck · Guangdong Baby Kingdom',nota:'🗑️ Eliminado 6 oct a pedido de Diego — no interesa. Además tenía un conflicto de fase sin resolver (otra fuente lo marcaba Fase 3).'},
  ]},
  {id:'z14',hall:'Halls 8.1–8.4',fase:2,nombre:'Sanitarios y Baño',fam:[
    {n:'Griferías y Sanitarios',e:'HUAYI · Kaiping Yibiao/Kaipu'},
@@ -1025,21 +1119,29 @@ const ZONAS=[
    {n:'Macetas y Jardineras',pri:1,e:'Ronbo Sunrise · Oceangoing Biz · YEAHFLOWER',stand:'6.1 K24/L23 · 8.0 A25',conf:'media'},
  ]},
  {id:'z16',hall:'Halls 9.3–11.3 + 9.0/12.0 exterior',fase:2,nombre:'Mobiliario general',fam:[
-   {n:'Sofás / comedor / sala ("Sofa Plus")',e:'Kuka · MANWAH · HTL — sin stand específico'},
-   {n:'Mobiliario de Ratán/Mimbre para Terraza',pri:1,nuevo:1,e:'Leisure Touch Rattan, Hall 10.3 L27',conf:'media',nota:'Ratán sintético resiste humedad de selva. Hotel+Restaurante como canal directo.'},
+   {n:'Mesas y Sillas de Restaurante / Muebles de Cafetería / Sofá cama',pri:1,nuevo:1,e:'Por confirmar en el stand',conf:'no',nota:'Confirmado 6 oct por tu propia investigación — mismo edificio que Mobiliario Escolar.'},
+   {n:'Sofás / comedor / sala genérico ("Sofa Plus")',e:'Kuka · MANWAH · HTL — sin stand específico'},
+   {n:'Mobiliario de Ratán/Mimbre para Terraza',desc:1,e:'Leisure Touch Rattan, Hall 10.3 L27',conf:'media',nota:'🗑️ Eliminado 6 oct a pedido de Diego — no interesa. Era ratán sintético resistente a humedad para terraza hotel/restaurante.'},
  ],zonaNota:'⚠️ Numeración distinta a la de Mobiliario Escolar (10.2) — puede ser otra convención de hall. Confirmar mapa físico al llegar.'},
  {id:'z17',hall:'Halls 13.1–14.2',fase:2,nombre:'Regalos y Decoración',fam:[
-   {n:'Decoración y Regalos',pri:1,e:'DH Crafts · Yiwu Trade Pavilion · Guangzhou Artisan Gift'},
-   {n:'Decoración Navideña',pri:1,e:'Yiwu Yun Mai · Shuangyuan Group'},
-   {n:'Tiras LED y Neon Flex',pri:1,e:'Surmountor 14.3 H04 · Glamor 14.3 D06-07',conf:'media'},
+   {n:'Tiras LED y Neon Flex',pri:1,e:'Surmountor 14.3 H04 · Glamor 14.3 D06-07',conf:'media',nota:'Confirmado 6 oct.'},
+   {n:'Decoración Navideña',e:'Yiwu Yun Mai · Shuangyuan Group',nota:'Reclasificado 6 oct: interesa un poco, pero ya no es prioritario — solo si sobra tiempo.'},
+   {n:'Decoración y Regalos general',desc:1,e:'DH Crafts · Yiwu Trade Pavilion · Guangzhou Artisan Gift',nota:'🗑️ Eliminado 6 oct — no interesa.'},
    {n:'Letreros LED programables fachada',nuevo:1,e:'NEXNOVO "FantaSign"',conf:'no',nota:'Solo paneles chicos tipo tienda — en video walls el MOQ se dispara.'},
  ]},
  {id:'z18',hall:'Halls 1.1–3.2 y 9.1–9.2',fase:2,nombre:'Equipos Hotelería',fam:[
    {n:'Vajilla y cerámica para hotel/restaurante',e:'Guangzhou Brilliant Ceramics · Guangdong Jiutu · Supor Food Service'},
  ]},
- {id:'z19',hall:'Hall 17.2',fase:2,nombre:'Seguridad (zona nueva)',fam:[
-   {n:'Control de Acceso / Torniquetes',pri:1,nuevo:1,e:'HFSecurity, 17.2 C05-06',conf:'alta',nota:'🏆 Único proveedor de todo el análisis confirmado para tu edición exacta (15-19 oct 2026).'},
-   {n:'Sistemas de Alarma / Cerraduras inteligentes',nuevo:1,e:'Locstar · Be-Tech (confirmados en Hall 10.1, posible presencia también aquí)',conf:'no'},
+ {id:'z19',hall:'Hall 17.2',fase:1,nombre:'Seguridad (zona nueva)',fam:[
+   {n:'Control de Acceso / Torniquetes',pri:1,nuevo:1,e:'HFSecurity, 17.2 C05-06',conf:'alta',nota:'🏆 Corregido 6 oct: el stand confirmado es para la 140ª edición 15-19 oct 2026 — eso es Fase 1, no Fase 2 como estaba antes. Zona distante de tus otras paradas de Día 2, reservar tiempo de traslado.'},
+   {n:'Sistemas de Alarma / Cerraduras inteligentes',pri:1,nuevo:1,e:'Locstar · Be-Tech (confirmados en Hall 10.1, posible presencia también aquí)',conf:'no',nota:'Confirmado 6 oct — interesa.'},
+ ]},
+ {id:'z23',hall:'Hall sin confirmar (Building and Decorative Materials)',fase:2,nombre:'Materiales de Construcción Modernos',fam:[
+   {n:'SPC / Panel WPC / Panel PVC mármol / Paneles acústicos / Cielos rasos',pri:1,nuevo:1,e:'Por confirmar en el stand',conf:'no',nota:'Confirmado 6 oct — alternativa liviana al porcelanato/mármol que ya habías descartado por pesado.'},
+ ]},
+ {id:'z24',hall:'Zonas exteriores 9.0 / 12.0 / 13.0',fase:2,nombre:'Prefabricadas y Equipamiento Exterior',fam:[
+   {n:'Casas Prefabricadas / Contenedor / Tiny Houses',pri:1,nuevo:1,e:'Por confirmar en el stand',conf:'no',nota:'Confirmado 6 oct — visita de reconocimiento de proveedor (catálogo y precios), no de compra directa. Conecta con terrenos + Instituto/Colegio (aulas modulares) + Hotel (glamping/sauna).'},
+   {n:'Baños prefabricados / Saunas / Jacuzzis interiores',e:'Por confirmar en el stand',conf:'no',nota:'Secundario — solo si sobra tiempo tras ver las casas prefabricadas.'},
  ]},
  {id:'z20',hall:'Hall 18.2 / Área D 20.1',fase:2,nombre:'Catering y Food Service',fam:[
    {n:'Máquinas de Granizados y Helados',pri:1,e:'Oceanpower 18.2 D46-47 · ESCOLO Área D 20.1/M28',conf:'media'},
