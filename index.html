@@ -165,6 +165,36 @@ table.cmp .fin-row td{font-weight:700;color:var(--navy)}
 
 .export-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom));display:flex;gap:6px;z-index:60}
 .export-bar button{flex:1;padding:10px 4px;border-radius:9px;font-size:11.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--navy)}
+
+/* Mapa */
+.mz-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;margin-bottom:4px}
+.mz-pill{flex-shrink:0;padding:6px 10px;border-radius:12px;font-size:10.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;white-space:nowrap;cursor:pointer}
+.mz-pill.f1{border-color:#FDE68A;color:#92400E}
+.mz-pill.f2{border-color:#C7D2FE;color:#3730A3}
+.mz-filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.mz-chip{padding:6px 11px;border-radius:14px;font-size:11.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer}
+.mz-chip.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mz-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;scroll-margin-top:175px}
+.mz-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.mz-hall{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.mz-nombre{font-size:13.5px;font-weight:800;color:var(--navy);margin-top:1px}
+.mz-fbadge{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:8px;flex-shrink:0;white-space:nowrap}
+.mz-fbadge.f1{background:#FEF3C7;color:#92400E}
+.mz-fbadge.f2{background:#E0E7FF;color:#3730A3}
+.mz-fbadge.f3{background:#F1F5F9;color:#64748B}
+.mz-fam{padding:6px 0;border-bottom:1px dashed var(--border)}
+.mz-fam:last-child{border-bottom:none}
+.mz-fam-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.mz-fam-nombre{font-size:12.5px;font-weight:700}
+.mz-fam-nombre.desc{opacity:.5;text-decoration:line-through}
+.mz-badges{display:flex;gap:3px;flex-shrink:0}
+.mz-b{font-size:8.5px;font-weight:800;padding:1px 5px;border-radius:6px;white-space:nowrap}
+.mz-b.pri{background:#DCFCE7;color:#166534}
+.mz-b.nuevo{background:#F3E8FF;color:#7C3AED}
+.mz-fam-meta{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+.mz-fam-nota{font-size:10.5px;color:#92400E;background:#FFFBEB;border-radius:6px;padding:4px 7px;margin-top:3px;line-height:1.4}
+.mz-zona-nota{font-size:10.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:6px 8px;margin-top:8px;line-height:1.4}
+.mz-f3{opacity:.55}
 </style>
 </head>
 <body>
@@ -184,6 +214,7 @@ table.cmp .fin-row td{font-weight:700;color:var(--navy)}
   <div class="tab" data-v="list" onclick="setTab('list')"><span class="ico">📑</span>Lista</div>
   <div class="tab" data-v="calc" onclick="setTab('calc')"><span class="ico">🧮</span>Calc</div>
   <div class="tab" data-v="cmp" onclick="setTab('cmp')"><span class="ico">⚖️</span>Comparar</div>
+  <div class="tab" data-v="mapa" onclick="setTab('mapa')"><span class="ico">🗺️</span>Mapa</div>
 </div>
 </div>
 
@@ -347,6 +378,13 @@ table.cmp .fin-row td{font-weight:700;color:var(--navy)}
   <div class="view" id="v-cmp">
     <div id="cmp-empty" class="empty">Marca "Comparar" en 2 o más registros desde la Lista.</div>
     <div class="comp-wrap"><table class="cmp" id="cmp-table" style="display:none"></table></div>
+  </div>
+
+  <!-- MAPA -->
+  <div class="view" id="v-mapa">
+    <div class="mz-strip" id="mz-strip"></div>
+    <div class="mz-filters" id="mz-filters"></div>
+    <div id="mz-lista"></div>
   </div>
 
 </main>
@@ -640,6 +678,12 @@ const CATEGORIAS = [
      {nombre:'Guangzhou Hongling Kitchen Equipment',producto:'Granizado 1-3 tanques, 12L/tanque.',stand:'No confirmado',conf:'no'},
      {nombre:'Guangzhou Sawish Kitchen Equipment',producto:'Slush machines comerciales.',stand:'No confirmado',conf:'no'},
    ]},
+  {id:'escolar',emoji:'🪑',nombre:'Mobiliario Escolar (Carpetas con asiento)',fase:2,nuevo:true,pri:true,zona:'Halls 9.2–13.2 (Furniture, +900 expositores)',
+   empresas:[
+     {nombre:'Jiansheng Group / Fujian Jiansheng Furniture',producto:'Pupitre+silla combinado ergonómico de aula (modelo HY-0360K), mobiliario modular, también mobiliario médico y gabinetes de acero.',stand:'10.2 G23-25 y 10.2 H22-24',conf:'proyectado'},
+     {nombre:'AOYASI Furniture Co., Ltd',producto:'Pupitres y sillas de aula, literas de dormitorio estudiantil.',stand:'11.3 F03-04 (stand de edición de primavera, sin confirmar para otoño)',conf:'no'},
+     {nombre:'Guangdong Wanrui Furniture Industry',producto:'Pupitres y sillas escolares, mobiliario de aula completo.',stand:'No confirmado',conf:'no'},
+   ]},
   // Categorías libres heredadas de la v1 de esta app — no tienen empresas precargadas
   {id:'motopartes',emoji:'🏍️',nombre:'Motopartes (🚫 descartado — mercado saturado)',fase:1,zona:'Halls 10.1–10.2',empresas:[]},
   {id:'otros',emoji:'❓',nombre:'Otros / algo nuevo que encontraste',fase:0,zona:null,empresas:[]},
@@ -810,6 +854,11 @@ const ITINERARIO = [
      ['Oceangoing Biz','Macetas y jardineras metálicas, desde US$4.6/pieza.',''],
      ['YEAHFLOWER','Plantas y flores artificiales, decoración de exteriores.',''],
    ]},
+   {catId:'escolar', zona:'Halls 9.2–13.2 · Furniture Section (+900 expositores)', pri:5, opc:false, es:[
+     ['Jiansheng Group','Pupitre+silla combinado ergonómico de aula (HY-0360K), mobiliario modular.','10.2 G23-25 y 10.2 H22-24'],
+     ['AOYASI Furniture','Pupitres y sillas de aula, literas de dormitorio (stand de primavera, sin confirmar otoño).',''],
+     ['Guangdong Wanrui Furniture','Pupitres y sillas escolares, mobiliario de aula completo.',''],
+   ]},
  ]},
  {id:'sup', fecha:'Sin día fijo — suplentes', fase:null, grupos:[
    {catId:'audiovisual', zona:'Halls 1.1–2.2', pri:null, opc:true, es:[
@@ -900,6 +949,165 @@ function setTab(v){
   if(v==='cmp') renderComparador();
   if(v==='calc') poblarCalcPick();
   if(v==='check') renderChecklist();
+  if(v==='mapa') renderMapa();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   MAPA — zonas físicas de la feria (hall → familias de producto)
+   Análisis consolidado 6 oct 2026. Datos de empresa/stand ya investigados
+   en esta sesión; muchos "No confirmado" porque la 140ª no publica su lista
+   oficial todavía — tratar como referencia de zona, no de stand exacto.
+   ════════════════════════════════════════════════════════════════════════ */
+const ZONAS=[
+ {id:'z1',hall:'Halls 1.1–2.2',fase:1,nombre:'Electrónica de Consumo y Smart Home',fam:[
+   {n:'Accesorios para Móvil',pri:1},
+   {n:'Cámaras CCTV/IP',pri:1},
+   {n:'Smart Home / Domótica'},
+   {n:'Equipos Audiovisuales'},
+ ]},
+ {id:'z2',hall:'Halls 3.1–4.2',fase:1,nombre:'Electrodomésticos',fam:[
+   {n:'Ventiladores y Cooling',pri:1},
+   {n:'Electrodomésticos Pequeños'},
+   {n:'Dispensadores de Agua Hot/Cold'},
+   {n:'Selladoras al vacío + Deshidratadoras',nuevo:1,e:'SUNSIR · Dongguan Timakes',conf:'no',nota:'Buscar aquí, sin stand confirmado. Única idea que crea producto propio (snacks deshidratados).'},
+   {n:'Fumigadoras ULV / anti-dengue',pri:1,nuevo:1,e:'Henan Zealyu Machinery',conf:'no',nota:'🏆 Mega-hallazgo — San Martín es zona endémica de dengue. Buscar aquí o en maquinaria exterior.'},
+ ]},
+ {id:'z3',hall:'Halls 5.1–7.2 y 10.1–11.1',fase:1,nombre:'Hardware, Herramientas y EPP',fam:[
+   {n:'Herramientas Manuales y EPP',pri:1,e:'Zhejiang Longhua · MSA Safety · Deltaplus'},
+   {n:'Herramientas Eléctricas',e:'Dongcheng (visto en 139ª)'},
+   {n:'Candados y Seguridad Mecánica',e:'Locstar 10.1 A16-17 · Blossom A-1.1 G47-48',conf:'media'},
+ ]},
+ {id:'z4',hall:'Hall 9.2',fase:1,nombre:'Maquinaria (zona específica)',fam:[
+   {n:'Equipos de Soldadura',nuevo:1,e:'Perfect Power, D47-48/E01-02',conf:'alta',nota:'Confirmado para tu edición exacta — verificar 220V monofásico, no trifásico.'},
+ ]},
+ {id:'z5',hall:'Halls 9.1–9.4',fase:1,nombre:'Iluminación LED',fam:[
+   {n:'LED Residencial y Comercial',pri:1,e:'Opple · NVC · MLS'},
+   {n:'Iluminación Solar exterior',e:'Jiangsu Yingbin · Ningbo Magic Cube'},
+ ]},
+ {id:'z6',hall:'Hall 10.2',fase:1,nombre:'Mobiliario Escolar y Motos (hall mixto)',fam:[
+   {n:'Mobiliario Escolar',pri:1,e:'Jiansheng Group, G23-25/H22-24',conf:'media',nota:'Confirmado edición otoño 2025, mismas fechas que tu Fase 2.'},
+   {n:'Motopartes',desc:1,nota:'🚫 Descartado — mercado saturado confirmado en campo por tu hermana.'},
+ ]},
+ {id:'z7',hall:'Halls 14.2–15.2',fase:1,nombre:'Nuevas Energías',fam:[
+   {n:'Paneles Solares industriales/granja',e:'Bluesun 15.2 · Kingfit 15.2 · GSO/Namkoo 14.2-14.3',conf:'media'},
+   {n:'Power Station solar portátil',nuevo:1,e:'Shenzhen Dibet · OUKITEL (visto en 139ª)',conf:'no',nota:'Resuelve apagones sin ruido ni combustible, a diferencia de Generadores.'},
+ ]},
+ {id:'z8',hall:'Área B exterior norte/sur',fase:1,nombre:'Maquinaria Agrícola y Ganadería',fam:[
+   {n:'Ganadería y Riego',pri:1,e:'Xinhua Poultry · Henan Muwei · Shandong Qinchuan'},
+   {n:'Sistemas de Riego por Goteo',pri:1,e:'Hebei Plentirain · Chinadrip'},
+   {n:'Bombas de Agua',e:'Shinhoo · DAYUAN · Lutian'},
+   {n:'Generadores Portátiles',e:'Jiangsu ETK · GB Power · JLT · Lutian'},
+ ]},
+ {id:'z9',hall:'Halls 10.1–10.2 y exterior',fase:1,nombre:'Vehículos y Repuestos',fam:[
+   {n:'Accesorios de Auto',e:'Wemaer · STEELMATE'},
+   {n:'Bicicletas / Scooters Eléctricos',desc:1,nota:'Bulto y flete alto, sin canal familiar.'},
+ ]},
+ {id:'z10',hall:'Sin zona confirmada',fase:1,nombre:'Básculas digitales comerciales',fam:[
+   {n:'Básculas digitales comerciales',nuevo:1,e:'Camry (visto en 133ª)',conf:'no',nota:'Pesar cerdos/alimento en granja + venta comercial general.'},
+ ]},
+ {id:'z11',hall:'Halls 1.1–3.2',fase:2,nombre:'Vajilla, Utensilios y Hogar',fam:[
+   {n:'Loncheras y Termos',pri:1,e:'HAERS, 2.2 D42-53'},
+   {n:'Hogar y Cocina',e:'Supor · ASD · Joyoung'},
+   {n:'Organizadores y Almacenamiento'},
+ ]},
+ {id:'z12',hall:'Halls 6.1–7.2',fase:2,nombre:'Salud, Bienestar y Purificación',fam:[
+   {n:'Purificadores y Filtros de Agua',pri:1,e:'Angel Water · Frizzlife · Royalstar'},
+   {n:'Equipos de Diagnóstico Doméstico',e:'Transtek · Contec'},
+   {n:'Masajeadores y Bienestar',e:'SKG INNO · DARIUS'},
+ ]},
+ {id:'z13',hall:'Halls 7.1–8.2',fase:2,nombre:'Bebé y Niño',fam:[
+   {n:'Artículos para Bebé',pri:1,e:'Nuby · B-Duck · Guangdong Baby Kingdom'},
+ ]},
+ {id:'z14',hall:'Halls 8.1–8.4',fase:2,nombre:'Sanitarios y Baño',fam:[
+   {n:'Griferías y Sanitarios',e:'HUAYI · Kaiping Yibiao/Kaipu'},
+ ]},
+ {id:'z15',hall:'Halls 6.1/8.0 y 11.1–12.2',fase:2,nombre:'Jardinería',fam:[
+   {n:'Macetas y Jardineras',pri:1,e:'Ronbo Sunrise · Oceangoing Biz · YEAHFLOWER',stand:'6.1 K24/L23 · 8.0 A25',conf:'media'},
+ ]},
+ {id:'z16',hall:'Halls 9.3–11.3 + 9.0/12.0 exterior',fase:2,nombre:'Mobiliario general',fam:[
+   {n:'Sofás / comedor / sala ("Sofa Plus")',e:'Kuka · MANWAH · HTL — sin stand específico'},
+   {n:'Mobiliario de Ratán/Mimbre para Terraza',pri:1,nuevo:1,e:'Leisure Touch Rattan, Hall 10.3 L27',conf:'media',nota:'Ratán sintético resiste humedad de selva. Hotel+Restaurante como canal directo.'},
+ ],zonaNota:'⚠️ Numeración distinta a la de Mobiliario Escolar (10.2) — puede ser otra convención de hall. Confirmar mapa físico al llegar.'},
+ {id:'z17',hall:'Halls 13.1–14.2',fase:2,nombre:'Regalos y Decoración',fam:[
+   {n:'Decoración y Regalos',pri:1,e:'DH Crafts · Yiwu Trade Pavilion · Guangzhou Artisan Gift'},
+   {n:'Decoración Navideña',pri:1,e:'Yiwu Yun Mai · Shuangyuan Group'},
+   {n:'Tiras LED y Neon Flex',pri:1,e:'Surmountor 14.3 H04 · Glamor 14.3 D06-07',conf:'media'},
+   {n:'Letreros LED programables fachada',nuevo:1,e:'NEXNOVO "FantaSign"',conf:'no',nota:'Solo paneles chicos tipo tienda — en video walls el MOQ se dispara.'},
+ ]},
+ {id:'z18',hall:'Halls 1.1–3.2 y 9.1–9.2',fase:2,nombre:'Equipos Hotelería',fam:[
+   {n:'Vajilla y cerámica para hotel/restaurante',e:'Guangzhou Brilliant Ceramics · Guangdong Jiutu · Supor Food Service'},
+ ]},
+ {id:'z19',hall:'Hall 17.2',fase:2,nombre:'Seguridad (zona nueva)',fam:[
+   {n:'Control de Acceso / Torniquetes',pri:1,nuevo:1,e:'HFSecurity, 17.2 C05-06',conf:'alta',nota:'🏆 Único proveedor de todo el análisis confirmado para tu edición exacta (15-19 oct 2026).'},
+   {n:'Sistemas de Alarma / Cerraduras inteligentes',nuevo:1,e:'Locstar · Be-Tech (confirmados en Hall 10.1, posible presencia también aquí)',conf:'no'},
+ ]},
+ {id:'z20',hall:'Hall 18.2 / Área D 20.1',fase:2,nombre:'Catering y Food Service',fam:[
+   {n:'Máquinas de Granizados y Helados',pri:1,e:'Oceanpower 18.2 D46-47 · ESCOLO Área D 20.1/M28',conf:'media'},
+ ]},
+ {id:'z21',hall:'Sin zona confirmada',fase:2,nombre:'Otros hallazgos nuevos',fam:[
+   {n:'Toldos y sombrillas comerciales',nuevo:1,e:'TEMPO Outdoor',conf:'media'},
+   {n:'Hieleras / Coolers portátiles',nuevo:1,e:'Heshan Aohong (AHIC) · Everich',conf:'no'},
+ ]},
+ {id:'z22',hall:'FASE 3 — no disponible',fase:3,nombre:'Sales el 28 oct, no podrás verlo',fam:[
+   {n:'Mascotas · Cosméticos · Fitness · Bolsas · Papelería Escolar · Ortopédicos · Juguetes STEM (probable) · Cámaras térmicas',desc:1},
+ ]},
+];
+let mzFiltro='all';
+function setMzFiltro(f,btn){
+  mzFiltro=f;
+  document.querySelectorAll('#mz-filters .mz-chip').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderMapa(true);
+}
+function mzIrA(id){
+  const el=document.getElementById('mzc-'+id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderMapa(soloFiltro){
+  if(!soloFiltro){
+    document.getElementById('mz-strip').innerHTML=ZONAS.filter(z=>z.fase!==3).map(z=>
+      `<div class="mz-pill f${z.fase}" onclick="mzIrA('${z.id}')">${z.hall.replace('Halls ','').replace('Hall ','')}</div>`
+    ).join('');
+    document.getElementById('mz-filters').innerHTML=`
+      <div class="mz-chip act" onclick="setMzFiltro('all',this)">Todas</div>
+      <div class="mz-chip" onclick="setMzFiltro('f1',this)">Fase 1</div>
+      <div class="mz-chip" onclick="setMzFiltro('f2',this)">Fase 2</div>
+      <div class="mz-chip" onclick="setMzFiltro('pri',this)">⭐ Prioridad</div>
+      <div class="mz-chip" onclick="setMzFiltro('nuevo',this)">🆕 Nuevos</div>`;
+  }
+  const famPasa=f=>{
+    if(mzFiltro==='all')return true;
+    if(mzFiltro==='f1')return true; // filtrado a nivel de zona más abajo
+    if(mzFiltro==='f2')return true;
+    if(mzFiltro==='pri')return !!f.pri;
+    if(mzFiltro==='nuevo')return !!f.nuevo;
+    return true;
+  };
+  const html=ZONAS.map(z=>{
+    if(mzFiltro==='f1' && z.fase!==1)return '';
+    if(mzFiltro==='f2' && z.fase!==2)return '';
+    const fams=z.fam.filter(famPasa);
+    if((mzFiltro==='pri'||mzFiltro==='nuevo') && fams.length===0)return '';
+    const famHtml=fams.map(f=>`
+      <div class="mz-fam">
+        <div class="mz-fam-top">
+          <div class="mz-fam-nombre ${f.desc?'desc':''}">${f.n}</div>
+          <div class="mz-badges">${f.pri?'<span class="mz-b pri">⭐ PRIORIDAD</span>':''}${f.nuevo?'<span class="mz-b nuevo">🆕 NUEVO</span>':''}</div>
+        </div>
+        ${f.e?`<div class="mz-fam-meta">🏭 ${f.e}${f.stand?' · '+f.stand:''} ${f.conf?CONF_ICON[f.conf]||'':''}</div>`:''}
+        ${f.nota?`<div class="mz-fam-nota">${f.nota}</div>`:''}
+      </div>`).join('');
+    return `
+      <div class="mz-card ${z.fase===3?'mz-f3':''}" id="mzc-${z.id}">
+        <div class="mz-head">
+          <div><div class="mz-hall">${z.hall}</div><div class="mz-nombre">${z.nombre}</div></div>
+          <div class="mz-fbadge f${z.fase}">${z.fase===3?'Fase 3':'Fase '+z.fase}</div>
+        </div>
+        ${famHtml}
+        ${z.zonaNota?`<div class="mz-zona-nota">${z.zonaNota}</div>`:''}
+      </div>`;
+  }).join('');
+  document.getElementById('mz-lista').innerHTML=html;
 }
 
 /* ════════════════════════════════════════════════════════════════════════

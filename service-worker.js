@@ -1,4 +1,4 @@
-const CACHE = 'feria-canton-v2-r5';
+const CACHE = 'feria-canton-v2-r6';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
